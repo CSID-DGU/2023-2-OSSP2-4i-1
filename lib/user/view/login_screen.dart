@@ -9,6 +9,8 @@ import 'package:yakmoya/common/component/find_pw_button.dart';
 import 'package:yakmoya/common/component/login_next_button.dart';
 import 'package:yakmoya/common/const/colors.dart';
 import 'package:yakmoya/common/const/text.dart';
+import 'package:yakmoya/common/view/default_layout.dart';
+import 'package:yakmoya/user/view/home_screen.dart';
 
 import '../../common/component/custom_text_form_field.dart';
 
@@ -28,7 +30,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   // bool _isAutoLogin = false;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  bool _isButtonEnabled = false;
+  /// 일단 true로 설정
+  bool _isButtonEnabled = true;
   String? _emailErrorText;
   String? _passwordErrorText;
   void _checkButtonEnabled() {
@@ -61,15 +64,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultLayout(
+      title: '',
       backgroundColor: PRIMARY_BLUE_COLOR,
-      body: GestureDetector(
+      child: GestureDetector(
         child: SafeArea(
           child: SingleChildScrollView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Column(
               children: [
-                CustomAppBar(),
                 Padding(
                   padding: EdgeInsets.only(
                     left: ScreenUtil().setWidth(24),
@@ -154,6 +157,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   //   username: _emailController.text.trim(),
                                   //   password: _passwordController.text.trim(),
                                   // );
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                                  );
                                 } catch (e) {
                                   // 로그인 실패 시 예외 처리
                                 } finally {

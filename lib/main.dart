@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yakmoya/user/view/home_screen.dart';
 import 'package:yakmoya/user/view/select_screen.dart';
 import 'camera_ex.dart';
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Pretendard',
           primarySwatch: Colors.green,
         ),
-        home: SelectScreen(),
+        home: HomeScreen(),
       ),
     );
   }
