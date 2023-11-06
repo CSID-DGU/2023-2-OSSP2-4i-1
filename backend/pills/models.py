@@ -3,7 +3,7 @@ from django.db import models
 
 class Pill(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
-    password = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
 
 
 class PillProperties(models.Model):
