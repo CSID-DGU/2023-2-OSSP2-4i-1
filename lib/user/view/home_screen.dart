@@ -64,20 +64,27 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: PRIMARY_BLUE_COLOR,
-        title: Text('이도형님'), // Replace with your app title
-        centerTitle: true, // Center the title if required
+        title: const Text(
+          '도형님',
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
+        centerTitle: true,
+        // Use a Row widget to have better control over the alignment of the children.
+        leading: GestureDetector(
+          onTap: () {
+            // TODO: Navigate to notifications screen
+          },
+          child: Image.asset('assets/img/alarm.png', width: 24, height: 24,),
+        ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              // TODO: Navigate to notifications screen
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               // TODO: Navigate to settings screen
             },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Image.asset('assets/img/setting.png', width: 44, height: 44),
+            ),
           ),
         ],
       ),
@@ -90,24 +97,25 @@ class _HomeScreenState extends State<HomeScreen> {
               bucket: bucket,
               child: GridView.builder(
                 key: PageStorageKey<String>('gridView'),
-                padding: const EdgeInsets.fromLTRB(10, 100, 10, 10), // You can increase padding if needed
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                padding: const EdgeInsets.fromLTRB(
+                    10, 100, 10, 10), // You can increase padding if needed
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 1,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 16,
                 ),
                 itemCount: products.length,
-                itemBuilder: (context, index) => _buildProductItem(context, products[index]),
+                itemBuilder: (context, index) =>
+                    _buildProductItem(context, products[index]),
               ),
-
             ),
           ),
         ],
       ),
       floatingActionButton: Container(
-        height: 80.0, // 원하는 높이 설정
-        width: 77.0, // 원하는 너비 설정
+        height: 100.0, // 원하는 높이 설정
+        width: 100.0, // 원하는 너비 설정
         child: FittedBox(
           child: FloatingActionButton(
             child: Text(
@@ -118,52 +126,60 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               // 버튼을 눌렀을 때의 액션
             },
-            backgroundColor: PRIMARY_BLUE_COLOR, // 이 색상은 앱의 기본 색상 코드여야 합니다.
-            // 둥근 모양을 주기 위해 여기서 shape를 조정할 수 있습니다.
+            backgroundColor: Colors.red[300],
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(35.0)),
+              borderRadius: BorderRadius.all(
+                Radius.circular(30.0),
+              ),
             ),
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              MaterialButton(
-                minWidth: 40,
-                onPressed: () => _showDialog('Dashboard'),
-                child: Column(
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: InkWell(
+                onTap: () => _showDialog('Dashboard'),
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.star, color: Colors.blue),
+                    Icon(Icons.star, color: Colors.blue, size: 30),
                     Text(
                       '복용중',
-                      style: TextStyle(color: Colors.blue, fontSize: 13),
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
               ),
-              MaterialButton(
-                minWidth: 40,
-                onPressed: () => _showDialog('Settings'),
-                child: Column(
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: () => _showDialog('Settings'),
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.search, color: Colors.grey),
+                    Icon(Icons.search, color: Colors.grey, size: 30),
                     Text(
                       '검색하기',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -172,43 +188,87 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class Pill {
   final String imagePath;
+  final String name; // 이름을 저장할 필드를 추가합니다.
 
-  const Pill(this.imagePath);
+  const Pill(this.imagePath, this.name);
 
   Widget get imageWidget {
-    return Image.asset(
-      imagePath,
-    );
+    return Image.asset(imagePath);
   }
 }
 
 final List<Pill> products = [
-  Pill('assets/img/p1.png'),
-  Pill('assets/img/p2.png'),
-  Pill('assets/img/p1.png'),
-  Pill('assets/img/p2.png'),
+  Pill('assets/img/p1.png', '알약1'),
+  Pill('assets/img/p2.png', '알약2'),
+  Pill('assets/img/plus.png', '추가하기'),
+  Pill('assets/img/warning.png', ''),
 ];
 
-
 Widget _buildProductItem(BuildContext context, Pill pill) {
+  // '추가하기' 선택 시 표시될 대화상자
+  void _showAddDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: SUB_BLUE_COLOR,
+          title: const Text('추가하기'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // 대화상자 닫기
+                  // TODO: 이름으로 선택 화면으로 이동
+                },
+                child: const Text('이름으로 선택'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // 대화상자 닫기
+                  // TODO: 사진으로 선택 화면으로 이동
+                },
+                child: const Text('사진으로 선택'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // 대화상자 닫기
+                  // TODO: 복용중에서 선택 화면으로 이동
+                },
+                child: const Text('복용중에서 선택'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
   return InkWell(
     onTap: () {
-      // TODO: Navigate to detail screen
+      // '추가하기'를 위한 대화상자 표시
+      if (pill.name == '추가하기') {
+        _showAddDialog();
+      } else {
+        // TODO: Navigate to detail screen
+      }
     },
-    child: Column(// Stretch the items to fill the Card
+    child: Column(
+      // Stretch the items to fill the Card
       children: [
         Expanded(
-          child: ClipRRect( // Clip the image with rounded corners
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)), // Top corners rounded
+          child: ClipRRect(
+            // Clip the image with rounded corners
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
             child: pill.imageWidget, // Pill image
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0), // Add padding around the text
+          padding: const EdgeInsets.all(8.0),
           child: Text(
-            '약 넘버링', // Replace with actual pill name
+            pill.name,
             style: TextStyle(
-              fontSize: 16.0, // Adjust the font size as needed
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
