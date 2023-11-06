@@ -19,7 +19,7 @@ class DefaultLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor ?? PRIMARY_BLUE_COLOR,
+      backgroundColor: backgroundColor ?? Colors.white,
       appBar: renderAppBar(context),
       body: SingleChildScrollView(child: child,),
       bottomNavigationBar: bottomNavigationBar,
@@ -32,7 +32,7 @@ class DefaultLayout extends StatelessWidget {
       return null;
     } else {
       return AppBar(
-        backgroundColor: backgroundColor ?? PRIMARY_BLUE_COLOR,
+        backgroundColor: backgroundColor ?? Colors.white,
         elevation: 0,
         title: Text(
           title!,

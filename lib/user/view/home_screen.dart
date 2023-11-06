@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yakmoya/common/const/colors.dart';
+import 'package:yakmoya/user/view/filter_network_list_screen.dart';
+import 'package:yakmoya/user/view/search_screen.dart';
 
 // 여기서 Dashboard, Chat, Profile, Settings 위젯을 정의해야 합니다.
 // 예를 들어 간단한 컨테이너로 대체할 수 있습니다.
@@ -191,26 +193,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class Pill {
+class HomePill {
   final String imagePath;
   final String name; // 이름을 저장할 필드를 추가합니다.
 
-  const Pill(this.imagePath, this.name);
+  const HomePill(this.imagePath, this.name);
 
   Widget get imageWidget {
     return Image.asset(imagePath);
   }
 }
 
-final List<Pill> products = [
-  Pill('assets/img/p1.png', '알약1'),
-  Pill('assets/img/p2.png', '알약2'),
-  Pill('assets/img/plus.png', '추가하기'),
-  Pill('assets/img/warning.png', ''),
+final List<HomePill> products = [
+  HomePill('assets/img/p1.png', '알약1'),
+  HomePill('assets/img/p2.png', '알약2'),
+  HomePill('assets/img/plus.png', '추가하기'),
+  HomePill('assets/img/warning.png', ''),
 ];
 
-Widget _buildProductItem(BuildContext context, Pill pill) {
-  void show() {
+Widget _buildProductItem(BuildContext context, HomePill pill) {
+  /*void show() {
     showDialog<String>(
       context: context,
 
@@ -296,7 +298,7 @@ Widget _buildProductItem(BuildContext context, Pill pill) {
     }).whenComplete(() {
       /// 다이얼로그가 종료됐을 때 호출됩니다.
     });
-  }
+  }*/
 
   // '추가하기' 선택 시 표시될 대화상자
   void _showAddDialog() {
@@ -324,7 +326,11 @@ Widget _buildProductItem(BuildContext context, Pill pill) {
               ),
               buildElevatedButton('이름으로 추가📝', () {
                 Navigator.of(context).pop(); // 대화상자 닫기
-                show(); // 이름으로 추가하는 다이얼로그를 보여줌
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(),
+                  ),
+                );
               }),
               buildElevatedButton('사진으로 추가📷', () {
                 Navigator.of(context).pop(); // 대화상자 닫기
