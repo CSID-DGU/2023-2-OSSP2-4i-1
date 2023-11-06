@@ -74,7 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: () {
             // TODO: Navigate to notifications screen
           },
-          child: Image.asset('assets/img/alarm.png', width: 24, height: 24,),
+          child: Image.asset(
+            'assets/img/alarm.png',
+            width: 24,
+            height: 24,
+          ),
         ),
         actions: [
           GestureDetector(
@@ -83,7 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 10),
-              child: Image.asset('assets/img/setting.png', width: 44, height: 44),
+              child:
+                  Image.asset('assets/img/setting.png', width: 44, height: 44),
             ),
           ),
         ],
@@ -205,44 +210,137 @@ final List<Pill> products = [
 ];
 
 Widget _buildProductItem(BuildContext context, Pill pill) {
+  void show() {
+    showDialog<String>(
+      context: context,
+
+      /// 다이얼로그 배경 컬러
+      // barrierColor: Colors.cyan.withOpacity(0.4),
+
+      /// 다이얼로그 배경을 터치했을 때 다이얼로그를 닫을지 말지 결정
+      /// true = 닫을 수 있음, false = 닫을 수 없음
+      barrierDismissible: true,
+
+      builder: (context) {
+        return Dialog(
+          /// 배경 컬러
+          backgroundColor: Colors.grey.shade100,
+
+          /// 그림자 컬러
+          shadowColor: Colors.blue,
+
+          /// 다이얼로그의 모양 설정
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+
+          /// z축 높이, elevation의 값이 높을 수록 그림자가 아래 위치하게 됩니다.
+          elevation: 10,
+
+          /// 다이얼로그의 위치 설정, 기본값은 center
+          alignment: Alignment.bottomCenter,
+
+          /// Dialog의 padding 값입니다..
+          /// sizedBox의 가로세로 값읠 infinity로 설정해놓고
+          /// 가로패딩 50, 세로 패딩 200을 줬습니다.
+          /// 이렇게 하면 좌우 50, 위아래 200만큼의 패딩이 생기고 배경이 나오게 됩니다.
+          /// 여기서 vertical의 값을 많이 주면,
+          /// 키보드가 올라왔을 때 공간이 부족해서 overflow가 발생할 수 있습니다.
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 50,
+            vertical: 100,
+          ),
+
+          /// Material 3 에서만 사용됨
+          // surfaceTintColor: Colors.green,
+
+          /// 소프트키보드가 올라왔을 때 다이얼로그의 사이즈가 조절되는 시간
+          insetAnimationDuration: const Duration(milliseconds: 1000),
+
+          /// 소프트키보드가 올라왔을 때 다이얼로그 사이즈 변경 애니메이션
+          insetAnimationCurve: Curves.bounceOut,
+
+          child: SizedBox(
+              width: 100,
+              height: 200,
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  const Text(
+                    "다이얼로그",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: "검색어를 입력해주세요",
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: 200,
+                    height: 40,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          /// Navigator.pop에서 result값을 넣어주면
+                          /// showDialog의 return 값이 됩니다.
+                          Navigator.pop(context, "return value");
+                        },
+                        child: const Text("확인")),
+                  ),
+                ],
+              )),
+        );
+      },
+    ).then((value) {
+      /// Navigator.pop 의 return 값이 들어옵니다.
+    }).whenComplete(() {
+      /// 다이얼로그가 종료됐을 때 호출됩니다.
+    });
+  }
+
   // '추가하기' 선택 시 표시될 대화상자
   void _showAddDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: SUB_BLUE_COLOR,
-          title: const Text('추가하기'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0), // 모서리를 둥글게
+            side: BorderSide(
+              color: PRIMARY_BLUE_COLOR,
+              width: 2,
+            ), // 테두리 색과 두께
+          ),
+          backgroundColor: Colors.white,
+          title: Center(
+            child: const Text('약 추가하기'),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // 대화상자 닫기
-                  // TODO: 이름으로 선택 화면으로 이동
-                },
-                child: const Text('이름으로 선택'),
+              Divider(
+                color: Colors.grey[300],
+                thickness: 2,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // 대화상자 닫기
-                  // TODO: 사진으로 선택 화면으로 이동
-                },
-                child: const Text('사진으로 선택'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // 대화상자 닫기
-                  // TODO: 복용중에서 선택 화면으로 이동
-                },
-                child: const Text('복용중에서 선택'),
-              ),
+              buildElevatedButton('이름으로 추가📝', () {
+                Navigator.of(context).pop(); // 대화상자 닫기
+                show(); // 이름으로 추가하는 다이얼로그를 보여줌
+              }),
+              buildElevatedButton('사진으로 추가📷', () {
+                Navigator.of(context).pop(); // 대화상자 닫기
+                // TODO: 사진으로 선택 화면으로 이동
+              }),
+              buildElevatedButton('복용중에서 추가💊', () {
+                Navigator.of(context).pop(); // 대화상자 닫기
+                // TODO: 복용중에서 선택 화면으로 이동
+              }),
             ],
           ),
         );
       },
     );
   }
+
   return InkWell(
     onTap: () {
       // '추가하기'를 위한 대화상자 표시
@@ -274,6 +372,34 @@ Widget _buildProductItem(BuildContext context, Pill pill) {
         ),
         // Add more info here if needed
       ],
+    ),
+  );
+}
+
+Widget buildElevatedButton(String buttonName, VoidCallback onPressed) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    child: ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black, // 글자 색상
+        backgroundColor: Colors.white, // 배경 색상
+        side: const BorderSide(
+          color: PRIMARY_BLUE_COLOR, // 여기에 실제 사용할 색상 코드를 입력하세요.
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8), // 테두리 둥글기
+        ),
+        minimumSize: const Size(
+          double.infinity, // 버튼 너비 최대로
+          50, // 버튼 높이
+        ),
+      ),
+      child: Text(
+        buttonName,
+        style: const TextStyle(
+            fontWeight: FontWeight.w900, fontSize: 22, color: BLUE_COLOR),
+      ),
     ),
   );
 }
