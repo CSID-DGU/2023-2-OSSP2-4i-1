@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yakmoya/camera_ex.dart';
 import 'package:yakmoya/common/const/colors.dart';
 import 'package:yakmoya/user/view/filter_network_list_screen.dart';
 import 'package:yakmoya/user/view/search_screen.dart';
@@ -335,6 +336,11 @@ Widget _buildProductItem(BuildContext context, HomePill pill) {
               buildElevatedButton('사진으로 추가📷', () {
                 Navigator.of(context).pop(); // 대화상자 닫기
                 // TODO: 사진으로 선택 화면으로 이동
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CameraExample(),
+                  ),
+                );
               }),
               buildElevatedButton('복용중에서 추가💊', () {
                 Navigator.of(context).pop(); // 대화상자 닫기

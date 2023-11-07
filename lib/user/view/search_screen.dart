@@ -45,8 +45,8 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void setState(VoidCallback fn) {
     // TODO: implement setState
-    this.query = query;
-    this.pills = pills;
+    query = query;
+    pills = pills;
     super.setState(fn);
   }
 
