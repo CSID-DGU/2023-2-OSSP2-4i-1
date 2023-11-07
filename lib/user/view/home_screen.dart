@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yakmoya/camera_ex.dart';
 import 'package:yakmoya/common/const/colors.dart';
+import 'package:yakmoya/pill/pill_model.dart';
 import 'package:yakmoya/user/view/filter_network_list_screen.dart';
 import 'package:yakmoya/user/view/search_screen.dart';
 
@@ -64,6 +65,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // 이 코드는 FilterNetworkListScreen을 열고 결과를 기다립니다.
+    void _openFilterNetworkListScreen() async {
+      final List<Pill> selectedPills = await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => FilterNetworkListScreen(),
+        ),
+      );
+
+      if (selectedPills != null && selectedPills.isNotEmpty) {
+        setState(() {
+          // TODO: 여기서 selectedPills 리스트의 내용을 HomeScreen의 products 리스트에 추가합니다.
+          // 예를 들어, products.addAll(selectedPills.map((pill) => HomePill(pill.assetName, pill.name)).toList());
+          // 이렇게 하면, Pill 객체들이 HomePill 객체로 변환되어 products 리스트에 추가됩니다.
+        });
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: PRIMARY_BLUE_COLOR,

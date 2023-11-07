@@ -7,7 +7,9 @@ class DefaultLayout extends StatelessWidget {
   final String? title;
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
+  final Action? actions;
   const DefaultLayout({
+    this.actions,
     this.bottomNavigationBar,
     this.title,
     required this.child,

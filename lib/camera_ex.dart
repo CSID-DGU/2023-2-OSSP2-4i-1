@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
+import 'package:yakmoya/common/component/custom_appbar.dart';
 
 class CameraExample extends StatefulWidget {
   const CameraExample({Key? key}) : super(key: key);
@@ -28,8 +29,8 @@ class _CameraExampleState extends State<CameraExample> {
   // 모델과 label.txt를 가져온다.
   loadModel() async {
     await Tflite.loadModel(
-      model: "assets/model_lite3_epoch20_acc997.tflite",
-      labels: "assets/Labels.txt",
+      model: "assets/model1.tflite",
+      labels: "assets/label1.txt",
     ).then((value) {
       setState(() {
         //_loading = false;
@@ -57,28 +58,39 @@ class _CameraExampleState extends State<CameraExample> {
         numResults: 2, // defaults to 5
         threshold: 0.2, // defaults to 0.1
         asynch: true // defaults to true
-    );
+        );
     print('Raw output from TFLite: $output');
     setState(() {
       _outputs = output;
     });
   }
 
-  // 이미지를 보여주는 위젯
   Widget showImage() {
+    double screenWidth = MediaQuery.of(context).size.width;
+    // 고정된 높이를 설정하거나 화면의 비율에 따라 설정할 수 있습니다.
+    double imageHeight = 200; // 고정된 높이 예시
+
     return Container(
-        color: const Color(0xffd0cece),
-        margin: EdgeInsets.only(left: 95, right: 95),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.width,
-        child: Center(
-            child: _image == null
-                ? Text('No image selected.')
-                : Image.file(File(_image!.path))));
+      color: const Color(0xffd0cece),
+      width: screenWidth,
+      height: imageHeight, // 고정된 높이로 설정
+      child: Center(
+        child: _image == null
+            ? Text('No image selected.')
+            : ClipRect(
+          child: Image.file(
+            File(_image!.path),
+            fit: BoxFit.contain, // 비율 유지
+          ),
+        ),
+      ),
+    );
   }
 
+
+
+
   recycleDialog() {
-    // Check if _outputs is not null and has at least one item.
     if (_outputs != null && _outputs!.isNotEmpty) {
       showDialog(
           context: context,
@@ -103,8 +115,8 @@ class _CameraExampleState extends State<CameraExample> {
               ),
               actions: <Widget>[
                 Center(
-                  child: new TextButton(
-                    child: new Text("Ok"),
+                  child: TextButton(
+                    child: Text("Ok"),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -112,8 +124,7 @@ class _CameraExampleState extends State<CameraExample> {
                 )
               ],
             );
-          }
-      );
+          });
     } else {
       // Handle the case where _outputs is null or empty.
       showDialog(
@@ -121,7 +132,7 @@ class _CameraExampleState extends State<CameraExample> {
           barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Column(
+              content: const Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -136,7 +147,7 @@ class _CameraExampleState extends State<CameraExample> {
               ),
               actions: <Widget>[
                 Center(
-                  child: new TextButton(
+                  child: TextButton(
                     child: new Text("Ok"),
                     onPressed: () {
                       Navigator.pop(context);
@@ -145,80 +156,10 @@ class _CameraExampleState extends State<CameraExample> {
                 )
               ],
             );
-          }
-      );
+          });
     }
   }
 
-
-  // recycleDialog() {
-  //   _outputs != null
-  //       ? showDialog(
-  //       context: context,
-  //       barrierDismissible:
-  //       false, // barrierDismissible - Dialog를 제외한 다른 화면 터치 x
-  //       builder: (BuildContext context) {
-  //         return AlertDialog(
-  //           // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
-  //           shape: RoundedRectangleBorder(
-  //               borderRadius: BorderRadius.circular(10.0)),
-  //           content: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             crossAxisAlignment: CrossAxisAlignment.center,
-  //             children: <Widget>[
-  //               Text(
-  //                 _outputs![0]['label'].toString().toUpperCase(),
-  //                 style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: 15.0,
-  //                   background: Paint()..color = Colors.white,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           actions: <Widget>[
-  //             Center(
-  //               child: new TextButton(
-  //                 child: new Text("Ok"),
-  //                 onPressed: () {
-  //                   Navigator.pop(context);
-  //                 },
-  //               ),
-  //             )
-  //           ],
-  //         );
-  //       })
-  //       : showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (BuildContext context) {
-  //         return AlertDialog(
-  //           content: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             crossAxisAlignment: CrossAxisAlignment.center,
-  //             children: <Widget>[
-  //               Text(
-  //                 "데이터가 없거나 잘못된 이미지 입니다.",
-  //                 style: TextStyle(
-  //                   color: Colors.black,
-  //                   fontSize: 15.0,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           actions: <Widget>[
-  //             Center(
-  //               child: new TextButton(
-  //                 child: new Text("Ok"),
-  //                 onPressed: () {
-  //                   Navigator.pop(context);
-  //                 },
-  //               ),
-  //             )
-  //           ],
-  //         );
-  //       });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -227,15 +168,16 @@ class _CameraExampleState extends State<CameraExample> {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return Scaffold(
+      appBar: CustomAppBar(),
         backgroundColor: const Color(0xfff4f3f9),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              'Classify',
-              style: TextStyle(fontSize: 25, color: const Color(0xff1ea271)),
-            ),
-            SizedBox(height: 25.0),
+            // Text(
+            //   'Classify',
+            //   style: TextStyle(fontSize: 25, color: const Color(0xff1ea271)),
+            // ),
+            // SizedBox(height: 25.0
             showImage(),
             SizedBox(
               height: 50.0,
@@ -245,6 +187,7 @@ class _CameraExampleState extends State<CameraExample> {
               children: <Widget>[
                 // 카메라 촬영 버튼
                 FloatingActionButton(
+                  heroTag: "camera",
                   child: Icon(Icons.add_a_photo),
                   tooltip: 'pick Iamge',
                   onPressed: () async {
@@ -252,9 +195,9 @@ class _CameraExampleState extends State<CameraExample> {
                     recycleDialog();
                   },
                 ),
-
                 // 갤러리에서 이미지를 가져오는 버튼
                 FloatingActionButton(
+                  heroTag: "gallery",
                   child: Icon(Icons.wallpaper),
                   tooltip: 'pick Iamge',
                   onPressed: () async {
