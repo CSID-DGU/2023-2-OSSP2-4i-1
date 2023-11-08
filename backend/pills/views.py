@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.http import HttpResponse
 from django.views.decorators.http import require_GET
 
 
@@ -9,4 +10,4 @@ def find_by_name(request):
 
 @require_GET
 def find_by_image(request):
-    return JsonResponse("hello")
+    pass
