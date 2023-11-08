@@ -1,6 +1,6 @@
-from django.http import JsonResponse
 from django.http import HttpResponse
-from django.views.decorators.http import require_GET
+from django.http import JsonResponse
+from django.views.decorators.http import *
 
 
 @require_GET

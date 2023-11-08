@@ -1,10 +1,9 @@
 from django.urls import path
 
+import alarms.views
+import likes.views
 import pills.views
-from alarms import views
-from likes import views
-from pills import views
-from users import views
+import users.views
 
 urlpatterns = [
     # alarms urls
