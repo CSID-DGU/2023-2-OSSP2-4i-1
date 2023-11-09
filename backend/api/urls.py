@@ -1,28 +1,10 @@
 from django.urls import path
-
-import alarms.views
-import likes.views
-import pills.views
-import users.views
+from .views import *
 
 urlpatterns = [
-    # alarms urls
-
-    # likes urls
-    path('pill/<int:pill_id>/likes', likes.views.likes),
-
-    # pills urls
-    path('pill/search/image', pills.views.find_by_image),
-
-    # users urls
-    path('user/signup', ),
-    path('user/login', ),
-    path('user/logout, '),
-    path('user/me', ),
-    path('user/pill', ),
-    path('user/pill/interaction', ),
-
-    # tokens urls
-    path('token/', ),
-    path('token/', ),
+    path("register", RegisterAPIView.as_view()),
+    path("login", LoginAPIView.as_view()),
+    path("user", UserAPIView.as_view()),
+    path("refresh", RefreshAPIView.as_view()),
+    path("logout", LogoutAPIView.as_view()),
 ]
