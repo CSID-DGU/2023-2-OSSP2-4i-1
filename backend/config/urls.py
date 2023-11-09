@@ -17,6 +17,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from rest_framework_simplejwt.views import TokenRefreshView
+
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from .serializers import *
+
+from django.urls import path, include
+from rest_framework import urls
+from .views import *
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register('list', UserViewSet) 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("auth/", AuthAPIView.as_view()),
+    path("auth/refresh/", TokenRefreshView.as_view()),
+    path("", include(router.urls)),
 ]
+
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
