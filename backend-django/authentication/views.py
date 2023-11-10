@@ -28,11 +28,11 @@ class LoginAPIView(APIView):
 
             user = User.objects.filter(email=email).first()
 
-            if not User:
-                raise APIException('[Invalid Credentials] 존재하지 않는 이메일입니다.')
-
-            if not user.check_password(password):
-                raise APIException('[Invalid Credentials] 비밀번호가 올바르지 않습니다.')
+            # if not User:
+            #     raise APIException('[Invalid Credentials] 존재하지 않는 이메일입니다.')
+            #
+            # if not user.check_password(password):
+            #     raise APIException('[Invalid Credentials] 비밀번호가 올바르지 않습니다.')
 
             access_token = create_access_token(user.id)
             refresh_token = create_refresh_token(user.id)
@@ -41,7 +41,7 @@ class LoginAPIView(APIView):
 
             response.set_cookie(key='refreshToken', value=refresh_token, httponly=True)
             response.data = {
-                'token': access_token,
+                'accessToken': access_token,
             }
 
             return response

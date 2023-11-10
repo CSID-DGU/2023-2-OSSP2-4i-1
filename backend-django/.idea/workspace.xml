@@ -5,56 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1936ab3f-daac-453d-a96d-0a9fb13579e0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_config/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/_config/asgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/_config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/_config/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_config/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/_config/wsgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/backend.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/dataSources.local.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/dataSources/78d0d6b0-5550-4ecf-9dd3-75054c59325a.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/dataSources/78d0d6b0-5550-4ecf-9dd3-75054c59325a/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/dataSources/78d0d6b0-5550-4ecf-9dd3-75054c59325a/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/dataSources/78d0d6b0-5550-4ecf-9dd3-75054c59325a/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/dataSources/78d0d6b0-5550-4ecf-9dd3-75054c59325a/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/dataSources/78d0d6b0-5550-4ecf-9dd3-75054c59325a/storage_v2/_src_/schema/yakmoya.DSVvrA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/watcherTasks.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/authentication.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/serializers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/api/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/config/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/config/asgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/config/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/config/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/config/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authentication/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/authentication/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +59,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1699604358943</updated>
-      <workItem from="1699604363830" duration="6666000" />
+      <workItem from="1699604363830" duration="7602000" />
     </task>
     <servers />
   </component>
