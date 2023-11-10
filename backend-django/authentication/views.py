@@ -45,3 +45,13 @@ class LoginAPIView(APIView):
             }
 
             return response
+
+
+class TokenAPIView(APIView):
+    def post(self, request):
+        refresh_token = request.COOKIES.get('refreshToken')
+        id = decode_refresh_token(refresh_token)
+        access_token = create_access_token(id)
+        return Response({
+            'accessToken': access_token,
+        })
