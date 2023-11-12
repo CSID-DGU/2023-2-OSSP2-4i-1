@@ -4,6 +4,7 @@ import 'package:yakmoya/common/view/default_layout.dart';
 import 'package:yakmoya/pill/pill_data.dart';
 import 'package:yakmoya/pill/pill_model.dart';
 import 'package:yakmoya/user/view/home_screen.dart';
+import 'package:yakmoya/user/view/search_detail_screen.dart';
 import 'package:yakmoya/user/view/search_widget.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -105,11 +106,16 @@ class _SearchScreenState extends State<SearchScreen> {
         leading: Image.asset(
           pill.assetName.toString(),
           fit: BoxFit.cover,
-          width: 50,
+          width: 90,
           height: 50,
         ),
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DetailScreen(pill: pill)),
       );
-
+    },
+  );
   ///
   Widget buildSearch() => SearchWidget(
         text: query,
