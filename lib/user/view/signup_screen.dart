@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/utils.dart';
 import 'package:yakmoya/common/component/custom_text_form_field.dart';
 import 'package:yakmoya/common/component/login_next_button.dart';
 import 'package:yakmoya/common/const/colors.dart';
 import 'package:yakmoya/common/const/text.dart';
+import 'package:yakmoya/user/model/signup_user_model.dart';
+import 'package:yakmoya/user/provider/user_me_provider.dart';
+import 'package:yakmoya/user/view/login_screen.dart';
 
 import '../../common/view/default_layout.dart';
 
@@ -64,16 +68,16 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     });
   }
 
-  void checkPhoneNumEnabled() {
-    String number = phoneNumController.text.trim();
-    bool isValid = number.isValidPhoneNumberFormat();
-
-    setState(() {
-      isPhoneNumValid = isValid;
-      phoneNumErrorText = isValid ? null : '올바른 전화번호 형식이 아닙니다';
-    });
-    checkButtonEnabled();
-  }
+  // void checkPhoneNumEnabled() {
+  //   String number = phoneNumController.text.trim();
+  //   bool isValid = number.isValidPhoneNumberFormat();
+  //
+  //   setState(() {
+  //     isPhoneNumValid = isValid;
+  //     phoneNumErrorText = isValid ? null : '올바른 전화번호 형식이 아닙니다';
+  //   });
+  //   checkButtonEnabled();
+  // }
 
   void checkEmailEnabled() {
     String email = emailController.text.trim();
@@ -119,7 +123,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   void checkButtonEnabled() {
     setState(() {
       isButtonEnabled =
-          isEmailValid && isPasswordValid && isPasswordCheckValid && isNickNameValid && isPhoneNumValid;
+          isEmailValid && isPasswordValid && isNickNameValid;
     });
   }
 
@@ -243,80 +247,80 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               SizedBox(
                 height: 8,
               ),
-              Text(
-                '휴대폰 번호',
-                style: signupReqStyle,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 8, // 비율을 사용하여 width를 조절
-                    child: CustomTextFormField(
-                      controller: phoneNumController,
-                      hintText: '번호를 입력해 주세요(' '-' '포함)',
-                      onChanged: (String value) {
-                        checkPhoneNumEnabled();
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 2, 10, 0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // ref
-                          //     .read(authRepositoryProvider)
-                          //     .checkEmail(emailController.text)
-                          //     .then((response) {
-                          //   if (response != null &&
-                          //       response.status == "success") {
-                          //     isEmailValid = true;
-                          //     showDialog(
-                          //       context: context,
-                          //       builder: (BuildContext context) {
-                          //         return AlertDialog(
-                          //           title: Text(response.message),
-                          //           content: Text(response.message ?? ""),
-                          //           actions: <Widget>[
-                          //             TextButton(
-                          //               child: Text("OK"),
-                          //               onPressed: () {
-                          //                 Navigator.of(context).pop();
-                          //               },
-                          //             ),
-                          //           ],
-                          //         );
-                          //       },
-                          //     );
-                          //   } else {
-                          //     isEmailValid = false;
-                          //     ScaffoldMessenger.of(context).showSnackBar(
-                          //         SnackBar(
-                          //             content: Text(
-                          //                 response?.message ?? "중복된 아이디 입니다")));
-                          //   }
-                          // });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red[400],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0), // 모서리 깎기
-                          ),
-                          padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-                        ),
-                        child: Text(
-                          '인증',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold,fontSize: 15),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Text(
+              //   '휴대폰 번호',
+              //   style: signupReqStyle,
+              // ),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Expanded(
+              //       flex: 8, // 비율을 사용하여 width를 조절
+              //       child: CustomTextFormField(
+              //         controller: phoneNumController,
+              //         hintText: '번호를 입력해 주세요(' '-' '포함)',
+              //         onChanged: (String value) {
+              //           checkPhoneNumEnabled();
+              //         },
+              //       ),
+              //     ),
+              //     Expanded(
+              //       flex: 2,
+              //       child: Padding(
+              //         padding: const EdgeInsets.fromLTRB(0, 2, 10, 0),
+              //         child: ElevatedButton(
+              //           onPressed: () {
+              //             // ref
+              //             //     .read(authRepositoryProvider)
+              //             //     .checkEmail(emailController.text)
+              //             //     .then((response) {
+              //             //   if (response != null &&
+              //             //       response.status == "success") {
+              //             //     isEmailValid = true;
+              //             //     showDialog(
+              //             //       context: context,
+              //             //       builder: (BuildContext context) {
+              //             //         return AlertDialog(
+              //             //           title: Text(response.message),
+              //             //           content: Text(response.message ?? ""),
+              //             //           actions: <Widget>[
+              //             //             TextButton(
+              //             //               child: Text("OK"),
+              //             //               onPressed: () {
+              //             //                 Navigator.of(context).pop();
+              //             //               },
+              //             //             ),
+              //             //           ],
+              //             //         );
+              //             //       },
+              //             //     );
+              //             //   } else {
+              //             //     isEmailValid = false;
+              //             //     ScaffoldMessenger.of(context).showSnackBar(
+              //             //         SnackBar(
+              //             //             content: Text(
+              //             //                 response?.message ?? "중복된 아이디 입니다")));
+              //             //   }
+              //             // });
+              //           },
+              //           style: ElevatedButton.styleFrom(
+              //             backgroundColor: Colors.red[400],
+              //             shape: RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(8.0), // 모서리 깎기
+              //             ),
+              //             padding:
+              //             EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+              //           ),
+              //           child: Text(
+              //             '인증',
+              //             style: TextStyle(
+              //                 color: Colors.white, fontWeight: FontWeight.bold,fontSize: 15),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 8,
               ),
@@ -355,27 +359,24 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               LoginNextButton(
                 onPressed: () {
                   if (isButtonEnabled) {
-                    // try {
-                    //   ref.read(userMeProvider.notifier).postUser(
-                    //     SignupUserModel(
-                    //       nickname: nicknameController.text.toString(),
-                    //       username: emailController.text.toString(),
-                    //       password: passwordController.text.toString(),
-                    //       phoneNumber: phoneNumController.text.toString(),
-                    //       confirmPassword:
-                    //       passwordCheckController.text.toString(),
-                    //     ),
-                    //   );
-                    //   print('성공적 수행');
-                    //   Navigator.of(context).push(
-                    //     MaterialPageRoute(
-                    //       builder: (context) => LoginScreen(),
-                    //     ),
-                    //   );
-                    // } catch (e) {
-                    //   print(e);
-                    //   print('에러');
-                    // }
+                    try {
+                      ref.read(userMeProvider.notifier).postUser(
+                        SignupUserModel(
+                          name: nicknameController.text.trim().toString(),
+                          email: emailController.text.trim().toString(),
+                          password: passwordController.text.toString(),
+                        ),
+                      );
+                      print('성공적 수행');
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ),
+                      );
+                    } catch (e) {
+                      print(e);
+                      print('에러');
+                    }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

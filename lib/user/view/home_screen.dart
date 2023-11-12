@@ -36,11 +36,13 @@ class Settings extends StatelessWidget {
 }
 
 class HomeScreen extends StatefulWidget {
+  static String get routeName => 'home';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   final PageStorageBucket bucket = PageStorageBucket();
 
   void _showDialog(String title) {

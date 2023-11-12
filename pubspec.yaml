@@ -54,7 +54,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^22.2.8
   flutter_local_notifications: ^15.1.0+1
   permission_handler: ^10.4.3
-#  flutter_localization: ^0.1.13 // 보류(Shared Preferences Automatic Import Error)
+  flutter_localization: ^0.1.13
   url_launcher: ^6.1.12
   get: ^4.6.0
   http: ^1.1.0
