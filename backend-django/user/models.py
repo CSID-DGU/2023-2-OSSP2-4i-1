@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from pill.models import Pill
 
 
 class User(AbstractUser):
@@ -13,3 +14,10 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+
+class Taking(models.Model):
+    patient = models.ForeignKey(User, on_delete=models.CASCADE)
+    pill = models.ForeignKey(Pill, on_delete=models.CASCADE)
+    scheduled_time = models.DateTimeField(null=True)
+    is_taken = models.BooleanField(default=False)
