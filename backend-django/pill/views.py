@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from authentication.authentication import *
 from pill.models import Pill
 from pill.serializers import PillSerializer
+from yakmoya_db.connection import connect_rds
 
 
 class SearchAPIView(APIView):
@@ -72,3 +73,36 @@ class IDSearchAPIView(APIView):
             return Response(serialized_data)
 
         raise exceptions.AuthenticationFailed('unauthenticated')
+
+
+class LikeAPIView(APIView):
+    def post(self, request, pill_id):
+        auth = get_authorization_header(request).split()
+
+        if auth and len(auth) == 2:
+            queryset = Pill.objects.filter(id=pill_id)
+
+            token = auth[1].decode('utf-8')
+
+            patient_id = decode_access_token(token)
+            pill_id = queryset.first().id
+
+            # DB 삽입
+
+            conn, cur = connect_rds()
+
+            query = """
+                INSERT INTO user_taking (patient_id, pill_id)
+                VALUES (%s, %s)
+            """
+            data = (patient_id, pill_id)
+
+            cur.execute(query, data)
+            conn.commit()
+
+            return Response("정상 등록 완료!")
+
+        raise exceptions.AuthenticationFailed('unauthenticated')
+
+    def delete(self, request):
+        pass
