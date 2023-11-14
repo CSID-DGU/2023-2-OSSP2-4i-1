@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yakmoya/common/router/go_router.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:yakmoya/user/view/home_screen.dart';
 import 'package:yakmoya/user/view/select_screen.dart';
 import 'camera_ex.dart';
@@ -31,16 +30,10 @@ class MyApp extends ConsumerWidget {
         ),
         debugShowCheckedModeBanner: false,
         routerConfig: route,
-        localizationsDelegates: const [
-          // 다언어 설정
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('en', ''), // English
-          const Locale('ko', ''), // Korean
-        ],
+        // supportedLocales: [
+        //   const Locale('en', ''), // English
+        //   const Locale('ko', ''), // Korean
+        // ],
       ),
     );
   }
