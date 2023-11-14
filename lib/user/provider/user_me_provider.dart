@@ -44,8 +44,8 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
     required this.ref,
   }) : super(UserModelLoading()) {
     //유저 정보 바로 가져 오기
-    logout();
-    // getMe();
+    // logout();
+    getMe();
   }
 
 

@@ -34,14 +34,15 @@ class CustomInterceptor extends Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     print('[REQ] [${options.method}] ${options.uri}');
 
-    // if (options.headers['accessToken'] == 'true') {
-    //   options.headers.remove('accessToken');
-    //   final token = await storage.read(key: ACCESS_TOKEN_KEY);
-    //   //실제 토큰으로 대체
-    //   options.headers.addAll({
-    //     'authorization': 'Bearer $token',
-    //   });
-    // }
+    print('dd');
+    if (options.headers['accessToken'] == 'true') {
+      options.headers.remove('accessToken');
+      final token = await storage.read(key: ACCESS_TOKEN_KEY);
+      //실제 토큰으로 대체
+      options.headers.addAll({
+        'authorization': 'Bearer $token',
+      });
+    }
 
     return super.onRequest(options, handler);
   }
@@ -60,23 +61,38 @@ class CustomInterceptor extends Interceptor {
 // 3) 에러가 났을때(어떤 상황 캐치하고 싶은지 분기처리가 중요함)
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    // 401에러 났을때(토큰 만료, 토큰 오타, status code)
+    // 403에러 났을때(토큰 만료, 토큰 오타, status code)
     // 토큰 재발급 받는 시도하고 토큰이 재발급되면
     // 다시 새로운 토큰 요청
     print('[ERR] [${err.requestOptions.method}] ${err.requestOptions.uri}');
 
+    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
+
+    //refreshToken 아예 없으면 당연히 에러 던진다
+    if (accessToken == null) {
+      //에러 던질때는 reject 사용
+      print('accessNull?');
+      return handler.reject(err);
+    }
+
     final isStatus401 = err.response?.statusCode == 401; //401
     final isStatus403 = err.response?.statusCode == 403; //403
-    final isPathRefresh = err.requestOptions.path == '/auth/token';
+    // final isPathRefresh = err.requestOptions.path == '/authentication/token';
     final isStatus500 = err.response?.statusCode == 500; // 추가: 500 에러 체크
 
-    if ((isStatus401 && !isPathRefresh)) {
+    if ((isStatus403)) {
       final dio = Dio();
       try {
-        print('token refresh start');
-        final resp = await dio.post(
-          'https://$ip/api/authentication/token', //수정
+        print('token refresh start@@');
+        await dio.post(
+          'http://localhost:8000/authentication/token', //수정
         );
+        print('do');
+        final resp = await dio.post(
+          'http://localhost:8000/authentication/token', //수정
+        );
+        print('here');
+        print(resp);
 
         final accessToken = resp.data['accessToken'];
 
@@ -98,9 +114,11 @@ class CustomInterceptor extends Interceptor {
       } on DioError catch (e) {
         print('DioError Occurred: ${e.message}');
         // ref.read(authProvider.notifier).logout();
+        print('debud');
         return handler.reject(e);
       }
     }
     return handler.reject(err);
   }
 }
+
