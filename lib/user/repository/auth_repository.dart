@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:yakmoya/common/const/data.dart';
@@ -7,19 +8,23 @@ import 'package:yakmoya/common/util/util.dart';
 import 'package:yakmoya/user/model/login_response.dart';
 import 'package:yakmoya/user/model/token_response.dart';
 
+import '../../common/stoarge/secure_stoarge.dart';
+
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final dio = ref.watch(dioProvider);
-  return AuthRepository(baseUrl: 'http://$ip/authentication', dio: dio);
+  return AuthRepository(baseUrl: 'http://$ip/authentication', dio: dio,ref: ref);
 });
 
 class AuthRepository {
   //baseUrl == http://$ip/auth
   final String baseUrl;
   final Dio dio;
+  final ProviderRef ref;
 
   AuthRepository({
     required this.baseUrl,
     required this.dio,
+    required this.ref,
   });
 
   Future<LoginResponse> login({
@@ -36,6 +41,19 @@ class AuthRepository {
         },
       ),
     );
+
+    // 응답에서 쿠키 추출
+    final cookies = resp.headers.map['set-cookie'];
+    print(cookies);
+    if (cookies != null && cookies.isNotEmpty) {
+      // 첫 번째 쿠키를 ';' 기준으로 분할하여 첫 부분만 사용
+      final fullCookie = cookies.first.split(';').first;
+      print('parsedCookies$cookies');
+      final storage = ref.watch(secureStorageProvider);
+      // ';' 이전 부분만 저장
+      await storage.write(key: 'cookies', value: fullCookie);
+    }
+
     return LoginResponse.fromJson(
       resp.data,
     );

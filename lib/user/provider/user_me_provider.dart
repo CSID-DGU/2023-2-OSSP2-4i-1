@@ -79,6 +79,7 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
         password: password,
       );
 
+
       //응답받은 accesstoken을 storage에 그대로 넣어준다
 
       await storage.write(key: ACCESS_TOKEN_KEY, value: resp.accessToken);

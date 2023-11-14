@@ -1,4 +1,6 @@
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:yakmoya/common/const/data.dart';
@@ -7,6 +9,9 @@ import 'package:yakmoya/common/stoarge/secure_stoarge.dart';
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
   final storage = ref.watch(secureStorageProvider);
+  // 쿠키 관리자 생성
+  final cookieJar = CookieJar();
+  dio.interceptors.add(CookieManager(cookieJar));
   dio.interceptors.add(
     CustomInterceptor(
       storage: storage,
@@ -66,6 +71,8 @@ class CustomInterceptor extends Interceptor {
     // 다시 새로운 토큰 요청
     print('[ERR] [${err.requestOptions.method}] ${err.requestOptions.uri}');
 
+    print(err.stackTrace);
+
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 
     //refreshToken 아예 없으면 당연히 에러 던진다
@@ -79,17 +86,19 @@ class CustomInterceptor extends Interceptor {
     final isStatus403 = err.response?.statusCode == 403; //403
     // final isPathRefresh = err.requestOptions.path == '/authentication/token';
     final isStatus500 = err.response?.statusCode == 500; // 추가: 500 에러 체크
-
+    // 저장된 쿠키 값을 불러옵니다.
+    final cookie = await storage.read(key: 'cookies');
     if ((isStatus403)) {
       final dio = Dio();
       try {
         print('token refresh start@@');
-        await dio.post(
-          'http://localhost:8000/authentication/token', //수정
-        );
-        print('do');
         final resp = await dio.post(
-          'http://localhost:8000/authentication/token', //수정
+          'http://localhost:8000/authentication/token',
+          options: Options(
+            headers: {
+              'Cookie':cookie,
+            }
+          ),
         );
         print('here');
         print(resp);
