@@ -11,6 +11,26 @@ from pill.serializers import PillSerializer
 from yakmoya_db.connection import connect_rds
 
 
+class TextSearchAPIView(APIView):
+    def get(self, request):
+        auth = get_authorization_header(request).split()
+
+        if auth and len(auth) == 2:
+            text = request.GET.get('text')
+
+            # DB 검색
+            queryset = Pill.objects.filter(name__icontains=text)
+
+            # Serializer를 사용하여 JSON으로 직렬화
+            serializer = PillSerializer(queryset, many=True)
+            serialized_data = serializer.data
+
+            # 응답
+            return Response(serialized_data)
+
+        raise exceptions.AuthenticationFailed('unauthenticated')
+
+
 class SearchAPIView(APIView):
     def get(self, request):
         auth = get_authorization_header(request).split()
