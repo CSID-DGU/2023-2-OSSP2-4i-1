@@ -115,7 +115,7 @@ class LikeAPIView(APIView):
             patient_id = decode_access_token(token)
             pill_id = queryset.first().id
 
-            # DB 삽입
+            # 삭제
 
             conn, cur = connect_rds()
 

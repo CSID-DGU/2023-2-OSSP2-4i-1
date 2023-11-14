@@ -173,6 +173,7 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
 
-settings.py
+# settings.py
 .idea/
-yakmoya_db/
+# yakmoya_db/
+raw_data/
