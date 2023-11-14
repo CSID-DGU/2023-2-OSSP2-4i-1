@@ -104,5 +104,29 @@ class LikeAPIView(APIView):
 
         raise exceptions.AuthenticationFailed('unauthenticated')
 
-    def delete(self, request):
-        pass
+    def delete(self, request, pill_id):
+        auth = get_authorization_header(request).split()
+
+        if auth and len(auth) == 2:
+            queryset = Pill.objects.filter(id=pill_id)
+
+            token = auth[1].decode('utf-8')
+
+            patient_id = decode_access_token(token)
+            pill_id = queryset.first().id
+
+            # DB 삽입
+
+            conn, cur = connect_rds()
+
+            query = """
+                DELETE FROM user_taking
+                WHERE patient_id=patient_id and pill_id=pill_id
+            """
+
+            cur.execute(query)
+            conn.commit()
+
+            return Response("정상 삭제 완료!")
+
+        raise exceptions.AuthenticationFailed('unauthenticated')
