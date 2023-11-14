@@ -38,7 +38,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   provider: ^6.0.5
-  google_sign_in: ^6.1.4
   dio: ^5.2.1+1
   flutter_secure_storage: ^8.0.0
   json_annotation: ^4.8.1
@@ -54,7 +53,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^22.2.8
   flutter_local_notifications: ^15.1.0+1
   permission_handler: ^10.4.3
-  flutter_localization: ^0.1.13
+#  flutter_localization: ^0.1.13
   url_launcher: ^6.1.12
   get: ^4.6.0
   http: ^1.1.0
