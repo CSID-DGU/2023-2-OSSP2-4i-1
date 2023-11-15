@@ -1,13 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pill_search_model.dart';
+part of 'search_response_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PillSearchModel _$PillSearchModelFromJson(Map<String, dynamic> json) =>
-    PillSearchModel(
+SearchResponseModel _$SearchResponseModelFromJson(Map<String, dynamic> json) =>
+    SearchResponseModel(
+      id: json['id'] as int,
+      name: json['name'] as String,
+      imgLink: json['img_link'] as String,
       labelForms: json['label_forms'] as String,
       labelShapes: json['label_shapes'] as String,
       labelColor1: json['label_color1'] as String,
@@ -18,8 +21,12 @@ PillSearchModel _$PillSearchModelFromJson(Map<String, dynamic> json) =>
       labelPrintBack: json['label_print_back'] as String? ?? '',
     );
 
-Map<String, dynamic> _$PillSearchModelToJson(PillSearchModel instance) =>
+Map<String, dynamic> _$SearchResponseModelToJson(
+        SearchResponseModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'img_link': instance.imgLink,
       'label_forms': instance.labelForms,
       'label_shapes': instance.labelShapes,
       'label_color1': instance.labelColor1,
