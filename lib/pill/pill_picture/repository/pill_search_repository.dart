@@ -10,7 +10,7 @@ part 'pill_search_repository.g.dart';
 
 final pillSearchRepositoryProvider = Provider<PillSearchRepository>((ref) {
   final dio = ref.watch(dioProvider);
-  return PillSearchRepository(dio, baseUrl: 'http://localhost:8000/pill/search');
+  return PillSearchRepository(dio, baseUrl: 'http://localhost:8000/pill/search/');
 });
 
 @RestApi()
@@ -19,7 +19,7 @@ abstract class PillSearchRepository {
 
   @GET('image')
   @Headers({'accessToken': 'true'})
-  Future<List<SearchResponseModel>> postImageSearch({
+  Future<List<SearchResponseModel>> getImageSearch({
     @Body() required PillSearchModel searchModel,
   });
 

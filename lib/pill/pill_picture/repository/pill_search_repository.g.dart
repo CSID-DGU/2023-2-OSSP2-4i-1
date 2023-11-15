@@ -19,7 +19,7 @@ class _PillSearchRepository implements PillSearchRepository {
   String? baseUrl;
 
   @override
-  Future<List<SearchResponseModel>> postImageSearch(
+  Future<List<SearchResponseModel>> getImageSearch(
       {required searchModel}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
