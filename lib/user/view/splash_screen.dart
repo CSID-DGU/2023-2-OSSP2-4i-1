@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       // 모든 이미지를 미리 캐시에 저장
       for (int i = 1; i <= 3; i++) {
-        precacheImage(AssetImage('asset/img/loading/loading$i.png'), context);
+        precacheImage(AssetImage('assets/img/loading/loading$i.png'), context);
       }
 
       _changeLoadingImage();
