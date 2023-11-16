@@ -1,5 +1,6 @@
 import json
 
+from django.core.paginator import Paginator
 from django.db.models import Q
 from rest_framework.authentication import get_authorization_header
 from rest_framework.response import Response
@@ -21,8 +22,13 @@ class TextSearchAPIView(APIView):
             # DB 검색
             queryset = Pill.objects.filter(name__icontains=text)
 
+            # 페이징 처리
+            page = request.GET.get('page', '1')  # 페이지
+            paginator = Paginator(queryset, 10)  # 페이지당 10개씩 보여주기
+            page_obj = paginator.get_page(page)
+
             # Serializer를 사용하여 JSON으로 직렬화
-            serializer = PillSerializer(queryset, many=True)
+            serializer = PillSerializer(page_obj, many=True)
             serialized_data = serializer.data
 
             # 응답
