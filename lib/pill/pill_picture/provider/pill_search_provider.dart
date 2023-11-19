@@ -3,6 +3,7 @@ import 'package:yakmoya/common/dio/dio.dart';
 import 'package:yakmoya/pill/pill_picture/model/pill_search_model.dart';
 import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
 import 'package:yakmoya/pill/pill_picture/repository/pill_search_repository.dart';
+import 'package:collection/collection.dart';
 
 enum TextSearchStatus { initial, loading, success, zero, error }
 
@@ -32,13 +33,21 @@ class PillSearchState {
   }
 }
 
-final pillSearchStateNotifierProvider =
+final pillSearchProvider =
     StateNotifierProvider<PillSearchStateNotifier, PillSearchState>(
   (ref) {
     final repository = ref.watch(pillSearchRepositoryProvider);
-    return PillSearchStateNotifier(repository: repository);
+    final notifier = PillSearchStateNotifier(repository: repository);
+    return notifier;
   },
 );
+
+final pillSearchDetailProvider =
+Provider.family<SearchResponseModel?, String>((ref, id) {
+  final state = ref.watch(pillSearchProvider);
+
+  return state.results.firstWhereOrNull((element) => element.id == id);
+});
 
 class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
   final PillSearchRepository repository;
@@ -50,6 +59,12 @@ class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
             pictureSearchStatus: PictureSearchStatus.initial,
           ),
         );
+
+  void getDetail({
+    required String id,
+}) async{
+    await repository.getPillDetail(id: id);
+  }
 
   Future<void> searchImage(PillSearchModel searchModel) async {
     state = state.copyWith(pictureSearchStatus: PictureSearchStatus.loading);

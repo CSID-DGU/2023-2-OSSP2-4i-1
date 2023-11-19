@@ -2,14 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:yakmoya/common/const/colors.dart';
 import 'package:yakmoya/common/view/default_layout.dart';
 import 'package:yakmoya/pill/pill_picture/provider/pill_search_provider.dart';
+import 'package:yakmoya/pill/pill_picture/view/search_detail_screen.dart';
 import 'package:yakmoya/user/view/search_widget.dart';
 import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
 import 'package:yakmoya/user/view/splash_screen.dart';
 
 class TextSearchScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'text';
   const TextSearchScreen({super.key});
 
   @override
@@ -36,13 +39,13 @@ class _TextSearchScreenState extends ConsumerState<TextSearchScreen> {
 
   void searchPill(String query) => debounce(
         () async {
-          ref.read(pillSearchStateNotifierProvider.notifier).searchText(query);
+          ref.read(pillSearchProvider.notifier).searchText(query);
         },
       );
 
   @override
   Widget build(BuildContext context) {
-    final pillSearchState = ref.watch(pillSearchStateNotifierProvider);
+    final pillSearchState = ref.watch(pillSearchProvider);
     final searchStatus = pillSearchState.status;
     final searchResponse = pillSearchState.results; // 검색 결과 가져오기
 
@@ -86,12 +89,12 @@ class _TextSearchScreenState extends ConsumerState<TextSearchScreen> {
           SingleChildScrollView(
             child: () {
               switch (searchStatus) {
-                case SearchStatus.loading:
+                case TextSearchStatus.loading:
                   return const Center(
                     child: SplashScreen(),
                   );
 
-                case SearchStatus.success:
+                case TextSearchStatus.success:
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -102,12 +105,12 @@ class _TextSearchScreenState extends ConsumerState<TextSearchScreen> {
                     },
                   );
 
-                case SearchStatus.zero:
+                case TextSearchStatus.zero:
                   return const Center(
                     child: Text('검색 결과가 없습니다!'),
                   );
 
-                case SearchStatus.error:
+                case TextSearchStatus.error:
                   return const Center(
                     child: Text('[에러 발생!!] 잘못된 접근입니다!'),
                   );
@@ -134,7 +137,10 @@ class _TextSearchScreenState extends ConsumerState<TextSearchScreen> {
           height: 40,
         ),
         onTap: () {
-          // Navigate to detail screen or any other action
+          //goNamed -> pushNamed
+          print('hi');
+          context.pushNamed(SearchDetailScreen.routeName,
+              pathParameters: {'id': pill.id.toString()});
         },
       );
 }
