@@ -96,7 +96,7 @@ class IDSearchAPIView(APIView):
             serialized_data = serializer.data
 
             # 응답
-            return Response(serialized_data)
+            return Response(serialized_data[0])
 
         raise exceptions.AuthenticationFailed('unauthenticated')
 
