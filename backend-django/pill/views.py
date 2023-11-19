@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from authentication.authentication import *
-from pill.models import Pill
-from pill.serializers import PillSerializer
+from pill.models import Pill, Instructions
+from pill.serializers import PillSerializer, InstructionsSerializer
 from yakmoya_db.connection import connect_rds
 
 
@@ -91,8 +91,12 @@ class IDSearchAPIView(APIView):
         if auth and len(auth) == 2:
             queryset = Pill.objects.filter(id=pill_id)
 
+            name = queryset.first().name
+
+            queryset = Instructions.objects.filter(drug_name=name)
+
             # Serializer를 사용하여 JSON으로 직렬화
-            serializer = PillSerializer(queryset, many=True)
+            serializer = InstructionsSerializer(queryset, many=True)
             serialized_data = serializer.data
 
             # 응답
