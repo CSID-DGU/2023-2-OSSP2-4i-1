@@ -12,3 +12,15 @@ class Pill(models.Model):
     label_line_back = models.CharField(max_length=255, blank=True)
     label_print_front = models.CharField(max_length=255, blank=True)
     label_print_back = models.CharField(max_length=255, blank=True)
+
+
+class Intructions(models.Model):
+    idx = models.CharField(max_length=255)
+    drug_name = models.CharField(max_length=255)
+    pill_effect = models.CharField(max_length=10000, blank=True)
+    pill_amount = models.CharField(max_length=10000, blank=True)
+    pill_detail = models.CharField(max_length=10000, blank=True)
+    pill_method = models.CharField(max_length=10000, blank=True)
+    pill_food = models.CharField(max_length=10000, blank=True)
+    inter_x = models.IntegerField()
+    pill_inter = models.CharField(max_length=10000, blank=True)
