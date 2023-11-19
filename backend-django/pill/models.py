@@ -14,7 +14,7 @@ class Pill(models.Model):
     label_print_back = models.CharField(max_length=255, blank=True)
 
 
-class Intructions(models.Model):
+class Instructions(models.Model):
     idx = models.CharField(max_length=255)
     drug_name = models.CharField(max_length=255)
     pill_effect = models.CharField(max_length=10000, blank=True)
