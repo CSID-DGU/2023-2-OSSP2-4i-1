@@ -38,3 +38,19 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
+
+// class MyApp extends ConsumerWidget {
+//   const MyApp({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//         visualDensity: VisualDensity.adaptivePlatformDensity,
+//       ),
+//       home: CameraExample(), // CameraExample 위젯을 홈 화면으로 설정합니다.
+//     );
+//   }
+// }
