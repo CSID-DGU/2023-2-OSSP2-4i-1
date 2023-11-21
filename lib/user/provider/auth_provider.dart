@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:yakmoya/camera_ex.dart';
+import 'package:yakmoya/pill/pill_picture/view/search_detail_screen.dart';
+import 'package:yakmoya/pill/pill_picture/view/text_search_screen.dart';
 import 'package:yakmoya/user/model/user_model.dart';
 import 'package:yakmoya/user/provider/user_me_provider.dart';
 import 'package:yakmoya/user/view/home_screen.dart';
@@ -57,12 +60,29 @@ class AuthProvider extends ChangeNotifier {
       name: SelectScreen.routeName,
       builder: (_, __) => SelectScreen(),
     ),
-
     GoRoute(
       path: '/login',
       name: LoginScreen.routeName,
       builder: (_, __) => LoginScreen(),
     ),
+
+    GoRoute(
+      path: '/text',
+      name: TextSearchScreen.routeName,
+      builder: (_, __) => TextSearchScreen(),
+    ),
+    GoRoute(
+      path: '/pill/:id', // 경로 수정
+      name: SearchDetailScreen.routeName,
+      builder: (_, state) => SearchDetailScreen(id: state.pathParameters['id']!),
+    ),
+
+    GoRoute(
+      path: '/image',
+      name: ImageSearchScreen.routeName,
+      builder: (_, __) => ImageSearchScreen(),
+    ),
+
   ];
 
   logout() {
