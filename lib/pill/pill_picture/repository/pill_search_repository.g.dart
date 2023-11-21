@@ -75,14 +75,14 @@ class _PillSearchRepository implements PillSearchRepository {
   }
 
   @override
-  Future<List<SearchResponseModel>> getPillDetail({required id}) async {
+  Future<PillDetailModel> getPillDetail({required id}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<SearchResponseModel>>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<PillDetailModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -94,10 +94,7 @@ class _PillSearchRepository implements PillSearchRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map((dynamic i) =>
-            SearchResponseModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = PillDetailModel.fromJson(_result.data!);
     return value;
   }
 

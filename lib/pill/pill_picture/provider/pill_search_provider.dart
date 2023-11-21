@@ -46,7 +46,7 @@ final pillSearchDetailProvider =
 Provider.family<SearchResponseModel?, String>((ref, id) {
   final state = ref.watch(pillSearchProvider);
 
-  return state.results.firstWhereOrNull((element) => element.id == id);
+  return state.results.firstWhereOrNull((element) => element.id.toString() == id);
 });
 
 class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
@@ -69,13 +69,20 @@ class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
   Future<void> searchImage(PillSearchModel searchModel) async {
     state = state.copyWith(pictureSearchStatus: PictureSearchStatus.loading);
     try {
+      print('nowImage1');
       final response =
           await repository.getImageSearch(searchModel: searchModel);
+
+      print('nowImage2');
+
       if (response.isNotEmpty) {
+        print('nowImage3');
         state = state.copyWith(
           pictureSearchStatus: PictureSearchStatus.success,
           results: response,
-        ); // 검색 결과가 있는 경우
+        );
+        print(state.pictureSearchStatus);
+        print('nowImage4');// 검색 결과가 있는 경우
       } else if (response.isEmpty) {
         state = state.copyWith(
           pictureSearchStatus: PictureSearchStatus.zero,
@@ -83,6 +90,7 @@ class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
         ); // 검색 결과가 없는 경우
       }
     } catch (e) {
+      print('nowImage5');// 검색 결과가 있는 경우
       state = state.copyWith(
         pictureSearchStatus: PictureSearchStatus.error,
         results: [],

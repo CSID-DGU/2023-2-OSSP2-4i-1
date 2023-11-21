@@ -1,243 +1,29 @@
-// import 'dart:io';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:tflite/tflite.dart';
-// import 'package:yakmoya/common/component/custom_appbar.dart';
-//
-// class CameraExample extends StatefulWidget {
-//   const CameraExample({Key? key}) : super(key: key);
-//
-//   @override
-//   _CameraExampleState createState() => _CameraExampleState();
-// }
-//
-// class _CameraExampleState extends State<CameraExample> {
-//   File? _image;
-//   final picker = ImagePicker();
-//   List? _outputs;
-//
-//   // 앱이 실행될 때 loadModel 호출
-//   @override
-//   void initState() {
-//     super.initState();
-//     loadModel().then((value) {
-//       setState(() {});
-//     });
-//   }
-//
-//   // 모델과 label.txt를 가져온다.
-//   loadModel() async {
-//     await Tflite.loadModel(
-//       model: "assets/model.tflite",
-//       labels: "assets/labels.txt",
-//     ).then((value) {
-//       setState(() {
-//         //_loading = false;
-//       });
-//     });
-//   }
-//
-//   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
-//   Future getImage(ImageSource imageSource) async {
-//     final image = await picker.pickImage(source: imageSource);
-//
-//     setState(() {
-//       _image = File(image!.path); // 가져온 이미지를 _image에 저장
-//     });
-//     await classifyImage(File(image!.path)); // 가져온 이미지를 분류 하기 위해 await을 사용
-//   }
-//
-//   // 이미지 분류
-//   Future classifyImage(File image) async {
-//     print("asdasddas$image");
-//     var output = await Tflite.runModelOnImage(
-//         path: image.path,
-//         imageMean: 0.0, // defaults to 117.0
-//         imageStd: 255.0, // defaults to 1.0
-//         numResults: 2, // defaults to 5
-//         threshold: 0.2, // defaults to 0.1
-//         asynch: true // defaults to true
-//         );
-//     print('Raw output from TFLite: $output');
-//     setState(() {
-//       _outputs = output;
-//     });
-//   }
-//
-//   Widget showImage() {
-//     double screenWidth = MediaQuery.of(context).size.width;
-//     // 고정된 높이를 설정하거나 화면의 비율에 따라 설정할 수 있습니다.
-//     double imageHeight = 200; // 고정된 높이 예시
-//
-//     return Container(
-//       color: const Color(0xffd0cece),
-//       width: screenWidth,
-//       height: imageHeight, // 고정된 높이로 설정
-//       child: Center(
-//         child: _image == null
-//             ? Text('No image selected.')
-//             : ClipRect(
-//           child: Image.file(
-//             File(_image!.path),
-//             fit: BoxFit.contain, // 비율 유지
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//
-//
-//
-//   recycleDialog() {
-//     if (_outputs != null && _outputs!.isNotEmpty) {
-//       showDialog(
-//           context: context,
-//           barrierDismissible: false,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(10.0)),
-//               content: Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 crossAxisAlignment: CrossAxisAlignment.center,
-//                 children: <Widget>[
-//                   Text(
-//                     _outputs![0]['label'].toString().toUpperCase(),
-//                     style: TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 15.0,
-//                       background: Paint()..color = Colors.white,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//               actions: <Widget>[
-//                 Center(
-//                   child: TextButton(
-//                     child: Text("Ok"),
-//                     onPressed: () {
-//                       Navigator.pop(context);
-//                     },
-//                   ),
-//                 )
-//               ],
-//             );
-//           });
-//     } else {
-//       // Handle the case where _outputs is null or empty.
-//       showDialog(
-//           context: context,
-//           barrierDismissible: false,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               content: const Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 crossAxisAlignment: CrossAxisAlignment.center,
-//                 children: <Widget>[
-//                   Text(
-//                     "데이터가 없거나 잘못된 이미지 입니다.",
-//                     style: TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 15.0,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//               actions: <Widget>[
-//                 Center(
-//                   child: TextButton(
-//                     child: new Text("Ok"),
-//                     onPressed: () {
-//                       Navigator.pop(context);
-//                     },
-//                   ),
-//                 )
-//               ],
-//             );
-//           });
-//     }
-//   }
-//
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // 화면 세로 고정
-//     SystemChrome.setPreferredOrientations(
-//         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-//
-//     return Scaffold(
-//       appBar: CustomAppBar(),
-//         backgroundColor: const Color(0xfff4f3f9),
-//         body: Column(
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           children: [
-//             // Text(
-//             //   'Classify',
-//             //   style: TextStyle(fontSize: 25, color: const Color(0xff1ea271)),
-//             // ),
-//             // SizedBox(height: 25.0
-//             showImage(),
-//             SizedBox(
-//               height: 50.0,
-//             ),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//               children: <Widget>[
-//                 // 카메라 촬영 버튼
-//                 FloatingActionButton(
-//                   heroTag: "camera",
-//                   child: Icon(Icons.add_a_photo),
-//                   tooltip: 'pick Iamge',
-//                   onPressed: () async {
-//                     await getImage(ImageSource.camera);
-//                     recycleDialog();
-//                   },
-//                 ),
-//                 // 갤러리에서 이미지를 가져오는 버튼
-//                 FloatingActionButton(
-//                   heroTag: "gallery",
-//                   child: Icon(Icons.wallpaper),
-//                   tooltip: 'pick Iamge',
-//                   onPressed: () async {
-//                     await getImage(ImageSource.gallery);
-//                     recycleDialog();
-//                   },
-//                 ),
-//               ],
-//             )
-//           ],
-//         ));
-//   }
-//
-//   // 앱이 종료될 때
-//   @override
-//   void dispose() {
-//     Tflite.close();
-//     super.dispose();
-//   }
-// }
-
-
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
+import 'package:yakmoya/common/component/custom_appbar.dart';
+import 'package:yakmoya/common/view/default_layout.dart';
+import 'package:yakmoya/pill/pill_picture/model/pill_search_model.dart';
+import 'package:yakmoya/pill/pill_picture/provider/pill_search_provider.dart';
+import 'package:yakmoya/pill/pill_picture/view/image_search_results_screen.dart';
+import 'package:yakmoya/user/view/splash_screen.dart';
 
-class CameraExample extends StatefulWidget {
-  const CameraExample({Key? key}) : super(key: key);
+class ImageSearchScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'image';
+  const ImageSearchScreen({Key? key}) : super(key: key);
 
   @override
   _CameraExampleState createState() => _CameraExampleState();
 }
 
-class _CameraExampleState extends State<CameraExample> {
+class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
   File? _image;
   final picker = ImagePicker();
   List? _outputs;
+  PillSearchModel? testModel;
 
   // 앱이 실행될 때 loadModel 호출
   @override
@@ -262,6 +48,7 @@ class _CameraExampleState extends State<CameraExample> {
       });
     });
   }
+
   // drug_shape 모델 로드
   loadModel2() async {
     Tflite.close();
@@ -293,7 +80,7 @@ class _CameraExampleState extends State<CameraExample> {
     Tflite.close();
     await Tflite.loadModel(
       model: "assets/tflite/model_color.tflite",
-      labels: "assets/labels/labels_color.txt",
+      labels: "assets/labels/labels_color2.txt",
     ).then((value) {
       setState(() {
         //_loading = false;
@@ -324,7 +111,7 @@ class _CameraExampleState extends State<CameraExample> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-    );
+        );
 
     // drug_shape 예측
     loadModel2();
@@ -335,7 +122,7 @@ class _CameraExampleState extends State<CameraExample> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-    );
+        );
 
     // line 예측
     loadModel3();
@@ -346,7 +133,7 @@ class _CameraExampleState extends State<CameraExample> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-    );
+        );
 
     // color 예측
     loadModel4();
@@ -357,17 +144,19 @@ class _CameraExampleState extends State<CameraExample> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-    );
+        );
 
     // 정제가 아니면 분리선이 존재하지 않음
-    if (output1![0]['label'] != '정제'){
-      output3 = [{"index": 2, "label": "X", "confidence": 1}];
+    if (output1![0]['label'] != '정제') {
+      output3 = [
+        {"index": 2, "label": "X", "confidence": 1}
+      ];
     }
 
-    print('Raw output from TFLite: $output1');
-    print('Raw output from TFLite: $output2');
-    print('Raw output from TFLite: $output3');
-    print('Raw output from TFLite: $output4');
+    print('Raw output from TFLite: $output1'); // 정제(labelForms)
+    print('Raw output from TFLite: $output2'); // 장방형(labelShapes)
+    print('Raw output from TFLite: $output3'); // 분리선?
+    print('Raw output from TFLite: $output4'); // 하양(color)
 
     // 예측한 4개의 값 저장
     // 출력 값 예시
@@ -377,7 +166,25 @@ class _CameraExampleState extends State<CameraExample> {
     // output4 = [{index: 14, label: 하양, confidence: 0.8666980266571045}]
 
     setState(() {
+      // testModel = PillSearchModel(
+      //   labelForms: "경질캡슐제",
+      //   labelShapes: "장방형",
+      //   labelColor1: "하양",
+      //   labelColor2: "남색",
+      //   labelPrintFront: "HL PGN 50",
+      //   labelPrintBack: "",
+      //   labelLineFront: "",
+      //   labelLineBack: "",
+      // );
+
       _outputs = [output1, output2, output3, output4];
+      testModel = PillSearchModel(
+        labelForms: _outputs![0][0]['label'].toString(),
+        labelShapes: _outputs![1][0]['label'].toString(),
+        labelColor1: _outputs![3][0]['label'].toString(),
+        labelColor2: _outputs![3][0]['label'].toString(),
+      );
+
     });
     print(_outputs);
   }
@@ -386,9 +193,7 @@ class _CameraExampleState extends State<CameraExample> {
   Widget showImage() {
     return Container(
         color: const Color(0xffd0cece),
-        margin: EdgeInsets.only(left: 95, right: 95),
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.width,
         child: Center(
             child: _image == null
                 ? Text('No image selected.')
@@ -398,8 +203,6 @@ class _CameraExampleState extends State<CameraExample> {
   recycleDialog() {
     // Check if _outputs is not null and has at least one item.
     if (_outputs != null && _outputs!.isNotEmpty) {
-
-
       showDialog(
           context: context,
           barrierDismissible: false,
@@ -412,7 +215,7 @@ class _CameraExampleState extends State<CameraExample> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    _outputs![0][0]['label'].toString(),
+                    '제형: ${_outputs![0][0]['label'].toString()}',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
@@ -420,7 +223,7 @@ class _CameraExampleState extends State<CameraExample> {
                     ),
                   ),
                   Text(
-                    _outputs![1][0]['label'].toString(),
+                    '모양: ${_outputs![1][0]['label'].toString()}',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
@@ -428,7 +231,7 @@ class _CameraExampleState extends State<CameraExample> {
                     ),
                   ),
                   Text(
-                    _outputs![2][0]['label'].toString(),
+                    '앞면 색상: ${_outputs![3][0]['label'].toString()}',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
@@ -436,14 +239,13 @@ class _CameraExampleState extends State<CameraExample> {
                     ),
                   ),
                   Text(
-                    _outputs![3][0]['label'].toString(),
+                    '뒷면 색상: ${_outputs![3][0]['label'].toString()}',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
                       background: Paint()..color = Colors.white,
                     ),
                   ),
-
                 ],
               ),
               actions: <Widget>[
@@ -457,8 +259,7 @@ class _CameraExampleState extends State<CameraExample> {
                 )
               ],
             );
-          }
-      );
+          });
     } else {
       // Handle the case where _outputs is null or empty.
       showDialog(
@@ -490,25 +291,56 @@ class _CameraExampleState extends State<CameraExample> {
                 )
               ],
             );
-          }
-      );
+          });
     }
   }
+
+  Future<void> searchImage() async {
+    print(testModel!.labelColor2);
+    ref.read(pillSearchProvider.notifier).searchImage(testModel!);
+  }
+
+  Widget buildSearchResults(PillSearchState state) {
+    switch (state.pictureSearchStatus) {
+      case PictureSearchStatus.loading:
+        return SplashScreen();
+
+      case PictureSearchStatus.success:
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: state.results.length,
+          itemBuilder: (context, index) {
+            final pill = state.results[index];
+            return ListTile(
+              title: Text(pill.name), // 알약의 특정 속성 표시
+            );
+          },
+        );
+      case PictureSearchStatus.zero:
+        return Text('검색 결과가 없습니다!');
+
+      case PictureSearchStatus.error:
+        return Text('[에러 발생!!] 잘못된 접근입니다!');
+
+      default: // PictureSearchStatus.initial과 그 외의 상태
+        return Text('사진 촬영후에, 검색 버튼을 눌러주세요!');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // 화면 세로 고정
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
-    return Scaffold(
-        backgroundColor: const Color(0xfff4f3f9),
-        body: Column(
+    final imageSearchState = ref.watch(pillSearchProvider);
+    return DefaultLayout(
+      title: '이미지로 찾기',
+      backgroundColor: const Color(0xfff4f3f9),
+      child: SingleChildScrollView(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Classify',
-              style: TextStyle(fontSize: 25, color: const Color(0xff1ea271)),
-            ),
             SizedBox(height: 25.0),
             showImage(),
             SizedBox(
@@ -519,6 +351,7 @@ class _CameraExampleState extends State<CameraExample> {
               children: <Widget>[
                 // 카메라 촬영 버튼
                 FloatingActionButton(
+                  heroTag: 'camera',
                   child: Icon(Icons.add_a_photo),
                   tooltip: 'pick Iamge',
                   onPressed: () async {
@@ -529,6 +362,7 @@ class _CameraExampleState extends State<CameraExample> {
 
                 // 갤러리에서 이미지를 가져오는 버튼
                 FloatingActionButton(
+                  heroTag: 'gallery',
                   child: Icon(Icons.wallpaper),
                   tooltip: 'pick Iamge',
                   onPressed: () async {
@@ -537,9 +371,22 @@ class _CameraExampleState extends State<CameraExample> {
                   },
                 ),
               ],
-            )
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await searchImage();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SearchResultsScreen(),
+                  ),
+                );
+              },
+              child: Text('검색 시작'),
+            ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   // 앱이 종료될 때

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:yakmoya/common/const/data.dart';
 import 'package:yakmoya/common/dio/dio.dart';
+import 'package:yakmoya/pill/pill_picture/model/pill_detail_model.dart';
 import 'package:yakmoya/pill/pill_picture/model/pill_search_model.dart';
 import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
 
@@ -32,7 +33,7 @@ abstract class PillSearchRepository {
   @Headers({
     'accessToken': 'true',
   })
-  Future<List<SearchResponseModel>> getPillDetail({
+  Future<PillDetailModel> getPillDetail({
     @Path() required String id,
   });
 
