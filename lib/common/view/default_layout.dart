@@ -39,7 +39,7 @@ class DefaultLayout extends StatelessWidget {
         title: Text(
           title!,
           style: TextStyle(
-            fontSize: 17,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
