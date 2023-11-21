@@ -11,6 +11,7 @@ import 'package:yakmoya/user/view/search_widget.dart';
 import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
 import 'package:yakmoya/user/view/splash_screen.dart';
 
+
 class TextSearchScreen extends ConsumerStatefulWidget {
   static String get routeName => 'text';
   const TextSearchScreen({super.key});
@@ -133,8 +134,8 @@ class _TextSearchScreenState extends ConsumerState<TextSearchScreen> {
         leading: Image.network(
           pill.imgLink,
           fit: BoxFit.cover,
-          width: 40,
-          height: 40,
+          width: 80,
+          height: 80,
         ),
         onTap: () {
           //goNamed -> pushNamed

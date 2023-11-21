@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yakmoya/common/router/go_router.dart';
 import 'package:yakmoya/user/view/home_screen.dart';
 import 'package:yakmoya/user/view/select_screen.dart';
-import 'camera_ex.dart';
+import 'image_search_screen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
