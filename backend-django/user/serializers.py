@@ -25,3 +25,9 @@ class TakingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Taking
         fields = '__all__'
+
+
+class TakingScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TakingSchedule
+        fields = '__all__'

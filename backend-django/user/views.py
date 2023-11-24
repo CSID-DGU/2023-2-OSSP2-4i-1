@@ -41,6 +41,6 @@ class PillAPIView(APIView):
 
             query_set = Taking.objects.filter(patient_id=id)
 
-            return TakingSerializer(query_set).data
+            return Response(TakingSerializer(query_set, many=True).data)
 
         raise exceptions.AuthenticationFailed('unauthenticated')
