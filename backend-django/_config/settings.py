@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'authentication',
     'pill',
     'user',
+    'yakmoya_db',
 ]
 
 MIDDLEWARE = [
