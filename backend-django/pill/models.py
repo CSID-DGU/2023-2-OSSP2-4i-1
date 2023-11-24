@@ -32,6 +32,7 @@ class PillComponent(models.Model):
 
 
 class Interactions(models.Model):
+    pill_name = models.CharField(max_length=255, default=None)
     component_name1 = models.CharField(max_length=255)
     component_name2 = models.CharField(max_length=255)
     clinical_effect = models.CharField(max_length=255)

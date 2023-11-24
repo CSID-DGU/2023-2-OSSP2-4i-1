@@ -78,7 +78,12 @@ class InteractionAPIView(APIView):
                     # 시간 측정
                     start = time.time()
 
-                    print("** 디버깅 **")
+                    # 첫 번째 약이랑 같이 먹으면 안 되는 성분 리스트 추출
+                    query_set = Interactions.objects.filter(pill_name=pair[0])
+                    not_set = set()
+                    for q in query_set:
+                        not_set.add(q.component_name2)
+
                     for q in qset1:
                         pill1_components.append(q.pill_component)
                     for q in qset2:
@@ -86,13 +91,12 @@ class InteractionAPIView(APIView):
                     print(pill1_components)
                     print(pill2_components)
 
-                    for c1 in pill1_components:
-                        for c2 in pill2_components:
-                            final_query_set = Interactions.objects.filter(component_name1=c1, component_name2=c2)
-                            if final_query_set.exists():
-                                print(final_query_set.first().component_name1, end=" + ")
-                                print(final_query_set.first().component_name2, end=" : ")
-                                print(final_query_set.first().clinical_effect)
+                    flag = 0
+                    for c2 in pill2_components:
+                        if c2 in not_set:
+                            print("[Caution]", pair[0], "+", c2, "in", pair[1])
+                            for d in query_set.filter(component_name2=c2):
+                                print("\t\t", d.clinical_effect)
 
                     end = time.time()
 
