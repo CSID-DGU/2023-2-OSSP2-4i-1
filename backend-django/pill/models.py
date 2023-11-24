@@ -24,3 +24,11 @@ class Instructions(models.Model):
     pill_food = models.CharField(max_length=2555, blank=True)
     inter_x = models.IntegerField()
     pill_inter = models.CharField(max_length=2555, blank=True)
+
+
+class Interactions(models.Model):
+    name1 = models.CharField(max_length=255)
+    name2 = models.CharField(max_length=255)
+    clinical_effect = models.CharField(max_length=255)
+    mechanism = models.CharField(max_length=255)
+    handle = models.CharField(max_length=255)
