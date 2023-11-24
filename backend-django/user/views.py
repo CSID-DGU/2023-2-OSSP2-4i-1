@@ -41,16 +41,6 @@ class PillAPIView(APIView):
 
             query_set = Taking.objects.filter(patient_id=id)
 
-            taking_set = set()
-            for data in query_set:
-                taking_set.add(data.pill_id)
-
-            taking_list = list(taking_set)
-            taking_list.sort()
-
-            return JsonResponse({
-                'user': id,
-                'taking': taking_list,
-            })
+            return TakingSerializer(query_set).data
 
         raise exceptions.AuthenticationFailed('unauthenticated')
