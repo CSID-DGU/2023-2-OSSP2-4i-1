@@ -1,12 +1,15 @@
-from django.http import JsonResponse
+from django.http import HttpResponse
 from rest_framework.authentication import get_authorization_header
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import itertools
 
+from pill.models import PillComponent, Interactions
 from user.models import *
 from user.serializers import *
 from authentication.authentication import *
 
+import time
 
 class RegisterAPIView(APIView):
     def post(self, request):
@@ -42,5 +45,59 @@ class PillAPIView(APIView):
             query_set = Taking.objects.filter(patient_id=id)
 
             return Response(TakingSerializer(query_set, many=True).data)
+
+        raise exceptions.AuthenticationFailed('unauthenticated')
+
+
+class InteractionAPIView(APIView):
+    def get(self, request):
+        auth = get_authorization_header(request).split()
+
+        if auth and len(auth) == 2:
+            token = auth[1].decode('utf-8')
+            id = decode_access_token(token)
+
+            query_set = Taking.objects.filter(patient_id=id)  # 현재 복용 중인 약 검색
+            taking_name_list = list()  # 현재 복용 중인 약 리스트
+            for q in query_set:
+                taking_name_list.append(q.pill.name)
+            # 복용 중인 약 출력 (디버깅)
+            print(taking_name_list)
+
+            # 경우의 수 (combination, nC2)
+            combi_list = itertools.combinations(taking_name_list, 2)
+
+            for pair in combi_list:
+                pill1_components = list()
+                pill2_components = list()
+                qset1 = PillComponent.objects.filter(pill_name=pair[0])
+                qset2 = PillComponent.objects.filter(pill_name=pair[1])
+                if not qset1.exists() or not qset2.exists():
+                    continue  # 두 약 중 단 하나의 약이라도 PillComponent 에 등록되어 있지 않다면 상충여부를 확인할 필요가 없음
+                else:  # 두 약 모두 PillComponent 에 등록된 경우
+                    # 시간 측정
+                    start = time.time()
+
+                    print("** 디버깅 **")
+                    for q in qset1:
+                        pill1_components.append(q.pill_component)
+                    for q in qset2:
+                        pill2_components.append(q.pill_component)
+                    print(pill1_components)
+                    print(pill2_components)
+
+                    for c1 in pill1_components:
+                        for c2 in pill2_components:
+                            final_query_set = Interactions.objects.filter(component_name1=c1, component_name2=c2)
+                            if final_query_set.exists():
+                                print(final_query_set.first().component_name1, end=" + ")
+                                print(final_query_set.first().component_name2, end=" : ")
+                                print(final_query_set.first().clinical_effect)
+
+                    end = time.time()
+
+                    print("2개 검사 시간: ", end - start)
+
+            return HttpResponse("test")
 
         raise exceptions.AuthenticationFailed('unauthenticated')
