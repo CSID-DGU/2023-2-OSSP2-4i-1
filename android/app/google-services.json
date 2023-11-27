@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "266777192806",
+    "project_id": "yakmoya-b39a6",
+    "storage_bucket": "yakmoya-b39a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266777192806:android:2d08330c3fbd1396dd80a7",
+        "android_client_info": {
+          "package_name": "com.example.yakmoya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTVQrqDVd5We3Yk5TLOk7MFCvmu5bzoak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
