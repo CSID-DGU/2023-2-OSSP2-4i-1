@@ -87,7 +87,11 @@ class InteractionAPIView(APIView):
             # 경우의 수 (combination, nC2)
             combi_list = itertools.combinations(taking_name_list, 2)
 
+            ret = list()  # 최종 반환 값 (리스트)
+
             for pair in combi_list:
+                rs = set()  # 각 쌍에 대하여 임상효과 결과를 저장 (중복 제거)
+
                 pill1_components = list()
                 pill2_components = list()
                 qset1 = PillComponent.objects.filter(pill_name=pair[0])
@@ -116,13 +120,22 @@ class InteractionAPIView(APIView):
                         if c2 in not_set:
                             print("[Caution]", pair[0], "+", c2, "in", pair[1])
                             for d in query_set.filter(component_name2=c2):
+                                rs.add(d.clinical_effect)
                                 print("\t\t", d.clinical_effect)
 
                     end = time.time()
 
                     print("2개 검사 시간: ", end - start)
 
-            return HttpResponse("test")
+                    print(rs)
+                    if not len(rs) == 0:
+                        dc = dict()
+                        dc["pill_name1"] = pair[0]
+                        dc["pill_name2"] = pair[1]
+                        dc["clinical_effect"] = list(rs)
+                        ret.append(dc)
+
+            return JsonResponse(ret, safe=False)
 
         raise exceptions.AuthenticationFailed('unauthenticated')
 
