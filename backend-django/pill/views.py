@@ -90,13 +90,14 @@ class IDSearchAPIView(APIView):
         auth = get_authorization_header(request).split()
 
         if auth and len(auth) == 2:
-            queryset = Pill.objects.filter(id=pill_id)
+            pill = Pill.objects.get(id=pill_id)
 
-            name = queryset.first().name
+            name = pill.name
 
             queryset = Instructions.objects.get(drug_name=name)
 
             pill_name = name
+            pill_img = pill.img_link
             pill_effect = queryset.pill_effect
             pill_detail = queryset.pill_detail
             pill_method = queryset.pill_method
@@ -104,6 +105,7 @@ class IDSearchAPIView(APIView):
             ret = dict()
             ret["id"] = pill_id
             ret["name"] = pill_name
+            ret["img_link"] = pill_img
             ret["pill_effect"] = pill_effect
             ret["pill_detail"] = pill_detail
             ret["pill_method"] = pill_method
