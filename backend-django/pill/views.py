@@ -2,6 +2,7 @@ import json
 
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import JsonResponse
 from rest_framework.authentication import get_authorization_header
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -93,14 +94,24 @@ class IDSearchAPIView(APIView):
 
             name = queryset.first().name
 
-            queryset = Instructions.objects.filter(drug_name=name)
+            queryset = Instructions.objects.get(drug_name=name)
 
-            # Serializer를 사용하여 JSON으로 직렬화
-            serializer = InstructionsSerializer(queryset, many=True)
-            serialized_data = serializer.data
+            pill_name = name
+            pill_effect = queryset.pill_effect
+            pill_detail = queryset.pill_detail
+            pill_method = queryset.pill_method
+
+            ret = dict()
+            ret["id"] = pill_id
+            ret["name"] = pill_name
+            ret["pill_effect"] = pill_effect
+            ret["pill_detail"] = pill_detail
+            ret["pill_method"] = pill_method
+
+            print(ret)
 
             # 응답
-            return Response(serialized_data[0])
+            return JsonResponse(ret)
 
         raise exceptions.AuthenticationFailed('unauthenticated')
 
