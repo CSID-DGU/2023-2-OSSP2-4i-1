@@ -90,6 +90,7 @@ flutter:
     - assets/img/loading/
     - assets/tflite/
     - assets/labels/
+    - assets/tab/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
