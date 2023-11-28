@@ -8,7 +8,9 @@ import 'package:yakmoya/pill/pill_picture/view/text_search_screen.dart';
 import 'package:yakmoya/user/model/user_model.dart';
 import 'package:yakmoya/user/provider/user_me_provider.dart';
 import 'package:yakmoya/user/view/home_screen.dart';
+import 'package:yakmoya/user/view/home_screen2.dart';
 import 'package:yakmoya/user/view/login_screen.dart';
+import 'package:yakmoya/user/view/root_tab.dart';
 import 'package:yakmoya/user/view/select_screen.dart';
 import 'package:yakmoya/user/view/signup_screen.dart';
 import 'package:yakmoya/user/view/splash_screen.dart';
@@ -39,8 +41,8 @@ class AuthProvider extends ChangeNotifier {
     //'interview' 아래에 ':rid'를 붙였을 때의 경로는 /interview/:rid 자동으로 /가 추가된다
     GoRoute(
       path: '/',
-      name: HomeScreen.routeName,
-      builder: (_, __) => HomeScreen(),
+      name: RootTab.routeName,
+      builder: (_, __) => RootTab(),
       routes: [
       ],
     ),
