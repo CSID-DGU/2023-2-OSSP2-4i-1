@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 const PRIMARY_BLUE_COLOR = Color(0xFF53B9EE);
 const SUB_BLUE_COLOR = Color(0xFF0D9DE8);
+const BLUE_BLUE_COLOR = Color(0xFFE1F2FF);
 
-//주색상
-const PRIMARY_COLOR = Color(0xFFC9A7EB);
+const PRIMARY_PURPLE_COLOR = Color(0xFFC9A7EB);
 //서브 색상
 const SUB_COLOR = Color(0xFFEBD7FF);
 const SUB_COLOR2 = Color(0xFFF0E0FF);
@@ -22,6 +22,8 @@ const CURSOR_COLOR = Color(0xFF241E17);
 const HOME_PRIMARY_COLOR = Color(0xFF303030);
 
 const YELLOW_COLOR = Color(0xFFFEE500);
+
+const GREY_BUTTON_COLOR = Color(0xFFF5F6F8);
 
 
 const GREY_COLOR = Color(0xFF828282);
