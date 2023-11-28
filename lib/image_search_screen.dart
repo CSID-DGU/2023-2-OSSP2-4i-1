@@ -1,10 +1,14 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 import 'package:yakmoya/common/component/custom_appbar.dart';
+import 'package:yakmoya/common/component/login_next_button.dart';
+import 'package:yakmoya/common/const/colors.dart';
 import 'package:yakmoya/common/view/default_layout.dart';
 import 'package:yakmoya/pill/pill_picture/model/pill_search_model.dart';
 import 'package:yakmoya/pill/pill_picture/provider/pill_search_provider.dart';
@@ -184,7 +188,6 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
         labelColor1: _outputs![3][0]['label'].toString(),
         labelColor2: _outputs![3][0]['label'].toString(),
       );
-
     });
     print(_outputs);
   }
@@ -192,12 +195,19 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
   // 이미지를 보여주는 위젯
   Widget showImage() {
     return Container(
-        color: const Color(0xffd0cece),
-        width: MediaQuery.of(context).size.width,
-        child: Center(
-            child: _image == null
-                ? Text('No image selected.')
-                : Image.file(File(_image!.path))));
+      width: MediaQuery.of(context).size.width,
+      child: Center(
+        child: _image == null
+            ? SvgPicture.asset(
+                'assets/img/empty.svg',
+              )
+            : Image.file(
+                File(_image!.path),
+                height: 335,
+          width: 335,
+              ),
+      ),
+    );
   }
 
   recycleDialog() {
@@ -207,19 +217,20 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
+            return CupertinoAlertDialog(
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
+                    '검색 결과',
+                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 17),
+                  ),
+                  Text(
                     '제형: ${_outputs![0][0]['label'].toString()}',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
-                      background: Paint()..color = Colors.white,
                     ),
                   ),
                   Text(
@@ -227,7 +238,6 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
-                      background: Paint()..color = Colors.white,
                     ),
                   ),
                   Text(
@@ -235,7 +245,6 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
-                      background: Paint()..color = Colors.white,
                     ),
                   ),
                   Text(
@@ -243,7 +252,6 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
-                      background: Paint()..color = Colors.white,
                     ),
                   ),
                 ],
@@ -251,7 +259,14 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
               actions: <Widget>[
                 Center(
                   child: new TextButton(
-                    child: new Text("Ok"),
+                    child: new Text(
+                      "OK",
+                      style: TextStyle(
+                        color: PRIMARY_BLUE_COLOR,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -336,52 +351,63 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
     final imageSearchState = ref.watch(pillSearchProvider);
     return DefaultLayout(
       title: '이미지로 찾기',
-      backgroundColor: const Color(0xfff4f3f9),
+      backgroundColor: Colors.white,
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 25.0),
             showImage(),
-            SizedBox(
-              height: 50.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                // 카메라 촬영 버튼
-                FloatingActionButton(
-                  heroTag: 'camera',
-                  child: Icon(Icons.add_a_photo),
-                  tooltip: 'pick Iamge',
-                  onPressed: () async {
-                    await getImage(ImageSource.camera);
-                    recycleDialog();
-                  },
-                ),
-
-                // 갤러리에서 이미지를 가져오는 버튼
-                FloatingActionButton(
-                  heroTag: 'gallery',
-                  child: Icon(Icons.wallpaper),
-                  tooltip: 'pick Iamge',
-                  onPressed: () async {
-                    await getImage(ImageSource.gallery);
-                    recycleDialog();
-                  },
-                ),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await searchImage();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SearchResultsScreen(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 30.0,
                   ),
-                );
-              },
-              child: Text('검색 시작'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      // 카메라 촬영 버튼
+                      SignupEitherButton(
+                        text: '사진 촬영',
+                        onPressed: () async {
+                          await getImage(ImageSource.camera);
+                          recycleDialog();
+                        },
+                        svgUrl: 'assets/img/camera2.svg',
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SignupEitherButton(
+                        text: '이미지 업로드',
+                        onPressed: () async {
+                          await getImage(ImageSource.gallery);
+                          recycleDialog();
+                        },
+                        svgUrl: 'assets/img/gallery2.svg',
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 170,
+                  ),
+                  LoginNextButton(
+                    onPressed: () async {
+                      await searchImage();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SearchResultsScreen(),
+                        ),
+                      );
+                    },
+                    buttonName: '검색 시작',
+                    isButtonEnabled: true,
+                    color: SUB_BLUE_COLOR,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -394,5 +420,51 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
   void dispose() {
     Tflite.close();
     super.dispose();
+  }
+}
+
+class SignupEitherButton extends StatelessWidget {
+  final String text;
+  final String svgUrl;
+  final VoidCallback onPressed;
+
+  const SignupEitherButton({
+    required this.text,
+    required this.onPressed,
+    required this.svgUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: GREY_BUTTON_COLOR,
+        minimumSize: Size(100, 70),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(6.0),
+          side: BorderSide(
+            color: GREY_BUTTON_COLOR,
+            width: 1.0,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          SvgPicture.asset(svgUrl),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            text,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 17,
+              fontWeight: FontWeight.w900,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
