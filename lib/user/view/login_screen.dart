@@ -1,7 +1,6 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +11,6 @@ import 'package:yakmoya/common/const/colors.dart';
 import 'package:yakmoya/common/const/text.dart';
 import 'package:yakmoya/common/view/default_layout.dart';
 import 'package:yakmoya/user/provider/user_me_provider.dart';
-import 'package:yakmoya/user/view/home_screen.dart';
 
 import '../../common/component/custom_text_form_field.dart';
 

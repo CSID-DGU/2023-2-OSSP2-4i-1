@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/utils.dart';
 import 'package:yakmoya/common/component/custom_text_form_field.dart';
 import 'package:yakmoya/common/component/login_next_button.dart';
 import 'package:yakmoya/common/const/colors.dart';
