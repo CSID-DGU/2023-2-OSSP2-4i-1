@@ -15,6 +15,7 @@ import time
 
 from datetime import datetime
 
+
 class RegisterAPIView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -148,6 +149,7 @@ class AlarmAPIView(APIView):
             return Response("알림 정보 저장 완료!")
 
         raise exceptions.AuthenticationFailed('unauthenticated')
+
     def patch(self, request):
         auth = get_authorization_header(request).split()
 
@@ -164,5 +166,19 @@ class AlarmAPIView(APIView):
             instance.save()
 
             return Response("알림 정보 수정 완료!")
+
+        raise exceptions.AuthenticationFailed('unauthenticated')
+
+    def get(self, request):
+        auth = get_authorization_header(request).split()
+
+        if auth and len(auth) == 2:
+            token = auth[1].decode('utf-8')
+
+            patient_id = decode_access_token(token)
+
+            ds = TakingSchedule.objects.filter(patient_id=patient_id)
+
+            return Response(TakingScheduleSerializer(ds, many=True).data)
 
         raise exceptions.AuthenticationFailed('unauthenticated')
