@@ -24,5 +24,4 @@ class Taking(models.Model):
 class TakingSchedule(models.Model):
     patient = models.ForeignKey(User, on_delete=models.CASCADE)
     pill = models.ForeignKey(Pill, on_delete=models.CASCADE)
-    scheduled_time = models.DateTimeField(null=True)
-    is_taken = models.BooleanField(default=False)
+    scheduled_time = models.CharField(max_length=255)

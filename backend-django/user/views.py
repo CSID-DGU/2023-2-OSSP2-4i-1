@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse, JsonResponse
 from rest_framework.authentication import get_authorization_header
 from rest_framework.response import Response
@@ -10,6 +12,8 @@ from user.serializers import *
 from authentication.authentication import *
 
 import time
+
+from datetime import datetime
 
 class RegisterAPIView(APIView):
     def post(self, request):
@@ -118,5 +122,29 @@ class InteractionAPIView(APIView):
                     print("2개 검사 시간: ", end - start)
 
             return HttpResponse("test")
+
+        raise exceptions.AuthenticationFailed('unauthenticated')
+
+
+class AlarmAPIView(APIView):
+    def post(self, request):
+        auth = get_authorization_header(request).split()
+
+        if auth and len(auth) == 2:
+            token = auth[1].decode('utf-8')
+            data = json.loads(request.body)
+
+            patient_id = decode_access_token(token)
+            pill_id = data["pill_id"]
+            scheduled_time = data["time"]
+
+            instance = TakingSchedule.objects.create(
+                scheduled_time=scheduled_time,
+                patient_id=patient_id,
+                pill_id=pill_id,
+            )
+            instance.save()
+
+            return Response("알림 정보 저장 완료!")
 
         raise exceptions.AuthenticationFailed('unauthenticated')
