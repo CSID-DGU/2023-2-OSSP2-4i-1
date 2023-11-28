@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:yakmoya/pill/pill_picture/model/model_with_id.dart';
 
 part 'search_response_model.g.dart';
 
 @JsonSerializable()
-class SearchResponseModel {
-  @JsonKey(name: 'id') // JSON 키를 Dart 변수와 매핑
+class SearchResponseModel implements IModelWithId {
+  @override
   int id;
 
   @JsonKey(name: 'name')
@@ -14,42 +15,10 @@ class SearchResponseModel {
   @JsonKey(name: 'img_link') // 'imgLink' 대신 'img_link' 사용
   String imgLink;
 
-  @JsonKey(name: 'label_forms')
-  String labelForms;
-
-  @JsonKey(name: 'label_shapes')
-  String labelShapes;
-
-  @JsonKey(name: 'label_color1')
-  String labelColor1;
-
-  @JsonKey(name: 'label_color2')
-  String labelColor2;
-
-  @JsonKey(name: 'label_line_front', defaultValue: "")
-  String labelLineFront;
-
-  @JsonKey(name: 'label_line_back', defaultValue: "")
-  String labelLineBack;
-
-  @JsonKey(name: 'label_print_front', defaultValue: "")
-  String labelPrintFront;
-
-  @JsonKey(name: 'label_print_back', defaultValue: "")
-  String labelPrintBack;
-
   SearchResponseModel({
     required this.id,
     required this.name,
     required this.imgLink,
-    required this.labelForms,
-    required this.labelShapes,
-    required this.labelColor1,
-    required this.labelColor2,
-    this.labelLineFront = "",
-    this.labelLineBack = "",
-    this.labelPrintFront = "",
-    this.labelPrintBack = "",
   });
 
   factory SearchResponseModel.fromJson(Map<String, dynamic> json) => _$SearchResponseModelFromJson(json);
