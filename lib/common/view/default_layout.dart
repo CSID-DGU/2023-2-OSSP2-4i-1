@@ -9,6 +9,7 @@ class DefaultLayout extends StatelessWidget {
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
   final Action? actions;
+  final bool? isSingleChildScrollView;
   const DefaultLayout({
     this.actions,
     this.bottomNavigationBar,
@@ -16,6 +17,7 @@ class DefaultLayout extends StatelessWidget {
     required this.child,
     this.backgroundColor,
     this.floatingActionButton,
+    this.isSingleChildScrollView,
     super.key,
   });
 
@@ -24,7 +26,9 @@ class DefaultLayout extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
       appBar: renderAppBar(context),
-      body: child,
+      body: isSingleChildScrollView ?? false
+          ? SingleChildScrollView(child: child)
+          : child,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
     );
