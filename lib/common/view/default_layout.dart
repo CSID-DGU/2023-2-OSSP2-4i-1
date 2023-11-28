@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yakmoya/common/const/colors.dart';
 
 class DefaultLayout extends StatelessWidget {
@@ -23,7 +24,7 @@ class DefaultLayout extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
       appBar: renderAppBar(context),
-      body: SingleChildScrollView(child: child,),
+      body: child,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
     );
@@ -45,7 +46,7 @@ class DefaultLayout extends StatelessWidget {
         ),
         foregroundColor: Colors.black,
         leading: IconButton(
-          icon: Image.asset('assets/icon/back_icon.png',width: 20,),
+          icon: SvgPicture.asset('assets/img/arrow.svg',height: 30,),
           onPressed: () {
             Navigator.pop(context);
           },
