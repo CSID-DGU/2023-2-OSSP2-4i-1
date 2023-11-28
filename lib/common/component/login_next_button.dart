@@ -5,11 +5,13 @@ class LoginNextButton extends StatefulWidget {
   final String buttonName;
   final bool isButtonEnabled;
   final VoidCallback? onPressed;
+  final Color? color;
 
   const LoginNextButton({
     required this.onPressed,
     required this.buttonName,
     required this.isButtonEnabled,
+    this.color,
     super.key,
   });
 
@@ -26,12 +28,12 @@ class _LoginNextButtonState extends State<LoginNextButton> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(
-            height: 60,
+            height: 70,
             child: ElevatedButton(
               onPressed: widget.isButtonEnabled ? widget.onPressed : null,
               style: ElevatedButton.styleFrom(
                 primary:
-                widget.isButtonEnabled ? Colors.red[300] : Colors.grey[200],
+                widget.isButtonEnabled ? widget.color ?? Colors.red[300] : Colors.grey[200],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -40,7 +42,7 @@ class _LoginNextButtonState extends State<LoginNextButton> {
                 widget.buttonName,
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
-                  fontSize: 16,
+                  fontSize: 18,
                   color: Colors.white,
                 ),
               ),
