@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework.authentication import get_authorization_header
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -44,7 +44,21 @@ class PillAPIView(APIView):
 
             query_set = Taking.objects.filter(patient_id=id)
 
-            return Response(TakingSerializer(query_set, many=True).data)
+            ret = dict()
+
+            for data in query_set:
+                pill_id = data.pill_id
+                pill = Pill.objects.get(id=pill_id)
+                pill_name = pill.name
+                img_url = pill.img_link
+
+                dic = dict()
+                dic["name"] = pill_name
+                dic["img"] = img_url
+
+                ret[pill_id] = dic
+
+            return JsonResponse(ret)
 
         raise exceptions.AuthenticationFailed('unauthenticated')
 
