@@ -44,7 +44,7 @@ class PillAPIView(APIView):
 
             query_set = Taking.objects.filter(patient_id=id)
 
-            ret = dict()
+            ret = list()
 
             for data in query_set:
                 pill_id = data.pill_id
@@ -53,12 +53,13 @@ class PillAPIView(APIView):
                 img_url = pill.img_link
 
                 dic = dict()
+                dic["id"] = pill_id
                 dic["name"] = pill_name
                 dic["img"] = img_url
 
-                ret[pill_id] = dic
+                ret.append(dic)
 
-            return JsonResponse(ret)
+            return JsonResponse(ret, safe=False)
 
         raise exceptions.AuthenticationFailed('unauthenticated')
 
