@@ -37,4 +37,10 @@ abstract class PillSearchRepository {
     @Path() required String id,
   });
 
+  @POST('likes/{id}')
+  @Headers({'accessToken': 'true'})
+  Future<void> likePill({
+    @Path() required String id,
+  });
+
 }

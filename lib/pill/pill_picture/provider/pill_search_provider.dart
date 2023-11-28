@@ -105,6 +105,11 @@ class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
     state = state.copyWith(pictureSearchStatus: PictureSearchStatus.initial);
   }
 
+  Future<void>likesPill(String id) async{
+    final response = await repository.likePill(id: id);
+    return response;
+  }
+
   Future<void> searchText(String searchText) async {
     if (searchText.isEmpty) {
       // 검색 텍스트가 비어있는 경우
