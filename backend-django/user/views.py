@@ -148,3 +148,21 @@ class AlarmAPIView(APIView):
             return Response("알림 정보 저장 완료!")
 
         raise exceptions.AuthenticationFailed('unauthenticated')
+    def patch(self, request):
+        auth = get_authorization_header(request).split()
+
+        if auth and len(auth) == 2:
+            token = auth[1].decode('utf-8')
+            data = json.loads(request.body)
+
+            patient_id = decode_access_token(token)
+            pill_id = data["pill_id"]
+            scheduled_time = data["time"]
+
+            instance = TakingSchedule.objects.get(patient_id=patient_id, pill_id=pill_id)
+            instance.scheduled_time = scheduled_time
+            instance.save()
+
+            return Response("알림 정보 수정 완료!")
+
+        raise exceptions.AuthenticationFailed('unauthenticated')
