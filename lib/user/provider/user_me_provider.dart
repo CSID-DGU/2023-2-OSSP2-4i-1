@@ -3,14 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:yakmoya/common/const/data.dart';
+import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
 import 'package:yakmoya/user/model/signup_response.dart';
 import 'package:yakmoya/user/model/signup_user_model.dart';
 import 'package:yakmoya/user/model/user_model.dart';
+import 'package:yakmoya/user/model/user_pill_model.dart';
 import 'package:yakmoya/user/repository/auth_repository.dart';
 import 'package:yakmoya/user/repository/user_me_repository.dart';
 
 import '../../common/dio/dio.dart';
 import '../../common/stoarge/secure_stoarge.dart';
+
+final pillsProvider = FutureProvider<List<UserPillModel>>((ref) async {
+  final userMeRepository = ref.watch(userMeRepositoryProvider);
+  return userMeRepository.getPills();
+});
 
 final userMeProvider =
 StateNotifierProvider<UserMeStateNotifier, UserModelBase?>((ref) {
@@ -47,6 +54,7 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
     // logout();
     getMe();
   }
+
 
 
   Future<void> getMe() async {

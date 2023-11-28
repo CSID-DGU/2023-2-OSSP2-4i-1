@@ -2,8 +2,10 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:yakmoya/common/dio/dio.dart';
+import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
 import 'package:yakmoya/user/model/signup_user_model.dart';
 import 'package:yakmoya/user/model/user_model.dart';
+import 'package:yakmoya/user/model/user_pill_model.dart';
 
 import '../../common/const/data.dart';
 import '../model/signup_response.dart';
@@ -28,6 +30,12 @@ abstract class UserMeRepository {
     'accessToken': 'true',
   })
   Future<UserModel> getMe();
+
+  @GET('/pill')
+  @Headers({
+    'accessToken': 'true',
+  })
+  Future<List<UserPillModel>> getPills();
 
   @POST('/register')
   Future<SignupResponse> postUser(@Body() SignupUserModel user);
