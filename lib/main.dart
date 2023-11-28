@@ -1,13 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yakmoya/common/router/go_router.dart';
-import 'package:yakmoya/user/view/home_screen.dart';
-import 'package:yakmoya/user/view/select_screen.dart';
-import 'image_search_screen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     ProviderScope(
       child: MyApp(),
