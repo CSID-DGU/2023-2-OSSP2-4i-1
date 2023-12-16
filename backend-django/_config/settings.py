@@ -138,3 +138,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+ALLOWED_HOSTS = [
+    ".eu-north-1.compute.amazonaws.com"
+]
