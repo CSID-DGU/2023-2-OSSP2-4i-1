@@ -20,7 +20,7 @@ from django.urls import path, include
 from _config.views import IndexAPIView
 
 urlpatterns = [
-    path('/', IndexAPIView.as_view()),
+    path('', IndexAPIView.as_view()),
     path('admin/', admin.site.urls),
     # path('api/', include('api.urls')),
     path('authentication/', include('authentication.urls')),
