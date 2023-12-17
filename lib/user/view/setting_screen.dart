@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yakmoya/common/const/colors.dart';
+import 'package:yakmoya/common/const/text.dart';
 import 'package:yakmoya/user/provider/user_me_provider.dart';
 import 'package:yakmoya/user/view/alarm_setting_screen.dart';
 import 'package:yakmoya/user/view/delete_screen.dart';
@@ -15,16 +16,25 @@ class SettingScreen extends StatelessWidget {
       title: '설정',
       child: Column(
         children: [
-          Divider(color: Colors.grey[400],thickness: 0.5,),
+          Divider(
+            color: Colors.grey[400],
+            thickness: 0.5,
+          ),
           SettingComponent(
             title: '알림 설정',
             otherScreen: AlarmSettingScreen(),
           ),
-          Divider(color: Colors.grey[400],thickness: 0.5,),
+          Divider(
+            color: Colors.grey[400],
+            thickness: 0.5,
+          ),
           LogoutSettingComponent(
             title: '로그 아웃',
           ),
-          Divider(color: Colors.grey[400],thickness: 0.5,),
+          Divider(
+            color: Colors.grey[400],
+            thickness: 0.5,
+          ),
           // SettingComponent(
           //   title: '이용 약관',
           //   otherScreen: RuleExplainScreen(),
@@ -37,12 +47,18 @@ class SettingScreen extends StatelessWidget {
             title: '버전 정보',
             otherScreen: VersionInfoScreen(),
           ),
-          Divider(color: Colors.grey[400],thickness: 0.5,),
+          Divider(
+            color: Colors.grey[400],
+            thickness: 0.5,
+          ),
           SettingComponent(
             title: '회원 탈퇴',
             otherScreen: DeleteUserScreen(),
           ),
-          Divider(color: Colors.grey[400],thickness: 0.5,),
+          Divider(
+            color: Colors.grey[400],
+            thickness: 0.5,
+          ),
         ],
       ),
     );
@@ -77,7 +93,10 @@ class SettingComponent extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        trailing: Icon(Icons.arrow_forward_ios,color: GREY_COLOR,),
+        trailing: Icon(
+          Icons.arrow_forward_ios,
+          color: GREY_COLOR,
+        ),
       ),
     );
   }
@@ -119,9 +138,9 @@ class LogoutSettingComponent extends ConsumerWidget {
                         width: 125,
                         decoration: BoxDecoration(
                           color:
-                          SUB_BLUE_COLOR, // Background color for the '아니오' button
+                              SUB_BLUE_COLOR, // Background color for the '아니오' button
                           borderRadius:
-                          BorderRadius.circular(10), // Rounded corners
+                              BorderRadius.circular(10), // Rounded corners
                         ),
                         child: TextButton(
                           onPressed: () {
@@ -129,7 +148,7 @@ class LogoutSettingComponent extends ConsumerWidget {
                           },
                           style: TextButton.styleFrom(
                             primary:
-                            Colors.white, // Set the text color to white
+                                Colors.white, // Set the text color to white
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                 10,
@@ -140,7 +159,7 @@ class LogoutSettingComponent extends ConsumerWidget {
                             '아니요',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -151,7 +170,7 @@ class LogoutSettingComponent extends ConsumerWidget {
                       Container(
                         width: 125,
                         decoration: BoxDecoration(
-                          color: Colors.grey[400],
+                          color: GREY_COLOR,
                           borderRadius: BorderRadius.circular(
                               10), // Rounded corners for the '예' button
                         ),
@@ -171,7 +190,7 @@ class LogoutSettingComponent extends ConsumerWidget {
                             '예',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -203,7 +222,6 @@ class LogoutSettingComponent extends ConsumerWidget {
   }
 }
 
-
 class VersionInfoScreen extends StatelessWidget {
   const VersionInfoScreen({super.key});
 
@@ -215,8 +233,103 @@ class VersionInfoScreen extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            Image.asset('"assets/img/realapplogo.png"'),
-            const Text('현재 버전은 1.1.0입니다.',style: TextStyle(fontSize: 30,color: PRIMARY_BLUE_COLOR),),
+            SizedBox(
+              height: 40,
+            ),
+            Row(
+              children: [
+                SizedBox(width: 60),
+                Image.asset(
+                  'assets/img/realapplogo.png',
+                  width: 100,
+                ),
+                Text(
+                  '약모야',
+                  style: TextStyle(
+                    fontSize: 53,
+                    fontWeight: FontWeight.bold,
+                    color: SUB_BLUE_COLOR,
+                    fontFamily: 'Jalnan2', // 폰트 적용
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              width: 350,
+              height: 250,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1.0,
+                  color: SUB_BLUE_COLOR,
+                ),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            '안녕하세요! 약모야입니다.',
+                            style: TextStyle(
+                              color: GREY_PRIMARY_COLOR,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            '약모야는 알약 객체 인식 서비스를 제공하는 앱입니다.',
+                            style: TextStyle(
+                              color: GREY_PRIMARY_COLOR,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            '약의 이름을 모르거나,\n약에 대한 정보를 잃어버렸을때\n',
+                            style: TextStyle(
+                              color: GREY_PRIMARY_COLOR,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            '약모야의 도움을 받으세요!',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: SUB_BLUE_COLOR,
+                              fontFamily: 'Jalnan2',
+                              fontSize: 25,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Container(), // This takes up the remaining space
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 100,
+            ),
+            const Text(
+              '현재 버전은 1.1.0입니다.',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: SUB_BLUE_COLOR,
+                fontFamily: 'Jalnan2',
+                fontSize: 30,
+              ),
+            ), // 폰트 적용,)
           ],
         ),
       ),
