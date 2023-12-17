@@ -11,7 +11,7 @@ part 'pill_search_repository.g.dart';
 
 final pillSearchRepositoryProvider = Provider<PillSearchRepository>((ref) {
   final dio = ref.watch(dioProvider);
-  return PillSearchRepository(dio, baseUrl: 'http://localhost:8000/pill/');
+  return PillSearchRepository(dio, baseUrl: 'http://$ip/pill/');
 });
 
 @RestApi()
@@ -40,6 +40,12 @@ abstract class PillSearchRepository {
   @POST('likes/{id}')
   @Headers({'accessToken': 'true'})
   Future<void> likePill({
+    @Path() required String id,
+  });
+
+  @DELETE('{id}/likes')
+  @Headers({'accessToken': 'true'})
+  Future<void> deletePill({
     @Path() required String id,
   });
 
