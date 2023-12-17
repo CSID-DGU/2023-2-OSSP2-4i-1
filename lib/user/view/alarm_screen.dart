@@ -83,139 +83,149 @@ Widget PillCard(SamplePill pill) {
       color: Colors.white,
       child: InkWell(
         onTap: () {},
-        child: Container(
-          width: 335,
-          height: 150,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 1.0,
-              color: Colors.white,
-            ),
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.asset('assets/pills/alarmPill.png'),
-              const SizedBox(
-                width: 10.0,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+            width: 335,
+            height: 150,
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 1.0,
+                color: PRIMARY_BLUE_COLOR,
               ),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
-                    child: Text(
-                      pill.name!,
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
-                    child: Text(
-                      '남은 복용 알약 ${pill.num}',
-                      style: const TextStyle(
-                        fontSize: 17.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  Row(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Row(
+              children: [
+                Image.asset('assets/pills/alarmPill.png'),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Container(
-                          width: 45,
-                          height: 21,
-                          decoration: BoxDecoration(
-                            color: PRIMARY_BLUE_COLOR,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: PRIMARY_BLUE_COLOR,
-                              width: 1,
+                        padding: const EdgeInsets.fromLTRB(0, 22, 0, 0),
+                        child: Text(
+                          pill.name!,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: Text(
+                          '남은 복용 알약 ${pill.num}',
+                          style: const TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Container(
+                              width: 45,
+                              height: 21,
+                              decoration: BoxDecoration(
+                                color: PRIMARY_BLUE_COLOR,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: PRIMARY_BLUE_COLOR,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '아침',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                          child: Center(
-                            child: Text(
-                              '아침',
-                              style: TextStyle(
+                          Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Container(
+                              width: 45,
+                              height: 21,
+                              decoration: BoxDecoration(
                                 color: Colors.white,
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w700,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: PRIMARY_BLUE_COLOR,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '점심',
+                                  style: TextStyle(
+                                    color: PRIMARY_BLUE_COLOR,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Container(
+                              width: 45,
+                              height: 21,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: PRIMARY_BLUE_COLOR,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '저녁',
+                                  style: TextStyle(
+                                    color: PRIMARY_BLUE_COLOR,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Container(
-                          width: 45,
-                          height: 21,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: PRIMARY_BLUE_COLOR,
-                              width: 1,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            child: SvgPicture.asset(
+                              'assets/img/pencil.svg',
+                              height: 25,
                             ),
                           ),
-                          child: Center(
-                            child: Text(
-                              '점심',
-                              style: TextStyle(
-                                color: PRIMARY_BLUE_COLOR,
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w700,
-                              ),
+                          InkWell(
+                            child: SvgPicture.asset(
+                              'assets/img/trash.svg',
+                              height: 25,
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Container(
-                          width: 45,
-                          height: 21,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: PRIMARY_BLUE_COLOR,
-                              width: 1,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              '저녁',
-                              style: TextStyle(
-                                color: PRIMARY_BLUE_COLOR,
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        child: SvgPicture.asset('assets/img/pencil.svg',height: 30),
-                      ),
-                      InkWell(
-                        child: SvgPicture.asset('assets/img/trash.svg',height: 30,),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
