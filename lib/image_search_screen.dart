@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,9 @@ import 'package:yakmoya/pill/pill_picture/provider/pill_search_provider.dart';
 import 'package:yakmoya/pill/pill_picture/view/image_search_results_screen.dart';
 import 'package:yakmoya/user/view/flitering_screen.dart';
 import 'package:yakmoya/user/view/splash_screen.dart';
+import 'package:image/image.dart' as img;
+
+
 
 class ImageSearchScreen extends ConsumerStatefulWidget {
   static String get routeName => 'image';
@@ -94,6 +98,155 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
       });
     });
   }
+  hsvColor(double h, double s, double v) {
+    if (s < 0.2){
+      if (v >= 65){
+        return "흰색";
+      }
+      else if (v <= 10){
+        return "검정";
+      }
+      else{
+        return "회색";
+      }
+    }
+    else{
+      if (h < 37){
+        if (s < 0.50){
+          return "갈색";
+        }
+        else{
+          if (h < 16){
+            return "빨강";
+          }
+          else{
+            return "주황";
+          }
+        }
+      }
+      else if( h < 64 ){
+        return "노랑";
+      }
+      else if ( h < 69){
+        return "연두";
+      }
+      else if ( h < 144){
+        return "초록";
+      }
+      else if ( h < 190 ){
+        return "청록";
+      }
+      else if ( h < 226 ){
+        return "파랑";
+      }
+      else if ( h < 275 ){
+        return "남색";
+      }
+      else if ( h < 290 ){
+        return "보라";
+      }
+      else if ( h < 320 ){
+        return "자주";
+      }
+      else {
+        return "빨강";
+      }
+    }
+  }
+  // color 추출
+  colorPredict(File image) {
+    Image myImage = Image.file(image);
+    final img.Image? imagec = img.decodeImage(image.readAsBytesSync());
+
+    Map<String, int> dict = {"빨강":0, "갈색":0, "주황":0, "노랑":0, "연두":0, "초록":0,
+      "청록":0, "파랑":0, "남색":0, "보라":0, "자주":0, "흰색":0, "검정":0, "회색":0};
+
+    Map<String, int> outdict = {"빨강":0, "갈색":0, "주황":0, "노랑":0, "연두":0, "초록":0,
+      "청록":0, "파랑":0, "남색":0, "보라":0, "자주":0, "흰색":0, "검정":0, "회색":0};
+
+    double h = 0;
+    double s = 0;
+    double v = 0;
+
+    for(int i = -1 * min(256, imagec!.width ~/ 2); i < min(256, imagec.width ~/ 2); i++) {
+      for (int j = -1 * min(256, imagec.height ~/ 2); j < min(256, imagec.height ~/ 2); j++) {
+        final int pixelColor = imagec.getPixel(
+            imagec.width ~/ 2 + (i),
+            imagec.height ~/ 2 + (j)); // 예: (10, 10) 위치의 픽셀 RGB 값
+
+        final double red = img.getRed(pixelColor).toDouble();
+        final double green = img.getGreen(pixelColor).toDouble();
+        final double blue = img.getBlue(pixelColor).toDouble();
+
+        double H = 0.0;
+        double nmin = min(red, green);
+        nmin = min(nmin, blue);
+
+        double nmax = max(red, green);
+        nmax = max(nmax, blue);
+
+        double delta = 1; // 색상(H)를 구한다.
+        if (nmax != nmin) {
+          delta = nmax - nmin;
+        }
+
+        if (red == nmax) {
+          H = (green - blue) / delta; // 색상이 Yello와 Magenta사이
+        } else if (green == nmax) {
+          H = 2.0 + (blue - red) / delta; // 색상이 Cyan와 Yello사이
+        } else if (blue == nmax) {
+          H = 4.0 + (red - green) / delta; // 색상이 Magenta와 Cyan사이
+        }
+        H *= 60.0;
+        if (H < 0.0) {
+          H += 360.0;
+        }
+
+        double S = (nmax != 0.0) ? (nmax - nmin) / nmax : 0.0;
+        double V = nmax / 2.55;
+
+        h = H;
+        s = S;
+        v = V;
+
+        if (i >= -200 && i <= 200 && j >= -200 && j <= 200) {
+          dict[(hsvColor(H, S, V))] = (dict[(hsvColor(H, S, V))]! + 1);
+        }
+        else {
+          outdict[(hsvColor(H, S, V))] = (outdict[(hsvColor(H, S, V))]! + 1);
+        }
+      }
+    }
+
+    var sortedDict = Map.fromEntries(
+        dict.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
+    var sortedoutDict = Map.fromEntries(
+        outdict.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
+
+    var ignoreList = [];
+    var result = [];
+
+    //print(dict.values);
+    //print(outdict.values);
+
+    for (String s in sortedoutDict.keys){
+      //print(s + outdict[s].toString());
+      if (sortedoutDict[s]! >= 10000){
+        ignoreList.add(s);
+      }
+    }
+    for (String s in sortedDict.keys){
+      //print(s + dict[s].toString());
+      if (sortedDict[s]! >= 10000 && !ignoreList.contains(s)){
+        result.add(s);
+      }
+    }
+
+    return result;
+  }
+  /// ############## 여기까지   ##########################################
+
 
   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
   Future getImage(ImageSource imageSource) async {
@@ -159,22 +312,14 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
         asynch: true // defaults to true
     );
 
-    // color 예측
-    loadModel4();
-    var output4 = await Tflite.runModelOnImage(
-        path: image.path,
-        imageMean: 0.0, // defaults to 117.0
-        imageStd: 255.0, // defaults to 1.0
-        numResults: 1, // defaults to 5
-        threshold: 0, // defaults to 0.1
-        asynch: true // defaults to true
-    );
+    // // color 예측
+    // loadModel4();
+    var output4 = colorPredict(image);
 
     // 정제가 아니면 분리선이 존재하지 않음
     if (output1![0]['label'] != '정제'){
       output3 = [{"index": 2, "label": "X", "confidence": 1}];
     }
-
     print('Raw output from TFLite: $output1');
     print('Raw output from TFLite: $output2');
     print('Raw output from TFLite: $output3');
@@ -244,7 +389,14 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                     ),
                   ),
                   Text(
-                    '색상: ${_outputs![3][0]['label'].toString()}',
+                    '구분선: ${_outputs![2][0]['label'].toString()}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                  Text(
+                    '색상: ${_outputs![3].join(", ") ?? ""}',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
