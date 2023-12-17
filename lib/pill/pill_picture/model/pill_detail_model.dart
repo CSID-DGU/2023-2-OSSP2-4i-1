@@ -1,18 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:yakmoya/pill/pill_picture/model/model_with_id.dart';
 import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
 
 part 'pill_detail_model.g.dart';
 
-
 @JsonSerializable()
-class PillDetailModel  implements IModelWithId{
-  @override
-  int id;
-
-  @override
-  String name;
-
+class PillDetailModel extends SearchResponseModel {
   @JsonKey(name: 'pill_effect')
   String pillEffect;
 
@@ -23,8 +15,9 @@ class PillDetailModel  implements IModelWithId{
   String pillMethod;
 
   PillDetailModel({
-    required this.id,
-    required this.name,
+    required super.id,
+    required super.name,
+    required super.imgLink,
     required this.pillEffect,
     required this.pillDetail,
     required this.pillMethod,
