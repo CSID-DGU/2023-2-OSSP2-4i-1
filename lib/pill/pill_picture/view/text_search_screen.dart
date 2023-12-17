@@ -54,6 +54,7 @@ class _TextSearchScreenState extends ConsumerState<TextSearchScreen> {
     // searchResponse 내용을 콘솔에 출력
 
     return DefaultLayout(
+      isSingleChildScrollView: true,
       title: '이름으로 추가',
       child: Column(
         children: <Widget>[
