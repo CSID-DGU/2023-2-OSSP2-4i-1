@@ -3,6 +3,7 @@ import 'package:yakmoya/common/const/colors.dart';
 import 'package:yakmoya/user/view/login_screen.dart';
 
 import 'signup_screen.dart';
+
 class SelectScreen extends StatelessWidget {
   static String get routeName => 'select';
 
@@ -15,28 +16,20 @@ class SelectScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Center(
-              //   child: Text(
-              //     '',
-              //     style: TextStyle(
-              //       fontSize: 34,
-              //       fontWeight: FontWeight.bold,
-              //       color: Colors.black,
-              //       fontFamily: 'Jalnan2', // 폰트 적용
-              //     ),
-              //   ),
-              // ),
+              SizedBox(height: 270,),
               Row(
                 children: [
                   SizedBox(width: 60),
-                  Image.asset('assets/img/realapplogo.png',width: 90,),
+                  Image.asset(
+                    'assets/img/realapplogo.png',
+                    width: 90,
+                  ),
                   Text(
                     '약모야',
                     style: TextStyle(
-                      fontSize: 54,
+                      fontSize: 53,
                       fontWeight: FontWeight.bold,
                       color: SUB_BLUE_COLOR,
                       fontFamily: 'Jalnan2', // 폰트 적용
@@ -44,9 +37,13 @@ class SelectScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 150,),
+              SizedBox(
+                height: 190,
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
                 child: SizedBox(
                   height: 60,
                   child: ElevatedButton(
@@ -65,8 +62,7 @@ class SelectScreen extends StatelessWidget {
                           side: BorderSide(
                             width: 2,
                             color: PRIMARY_BLUE_COLOR,
-                          )
-                      ),
+                          )),
                     ),
                     child: Text(
                       '로그인',
@@ -79,7 +75,9 @@ class SelectScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
