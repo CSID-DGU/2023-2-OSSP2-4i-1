@@ -1,14 +1,15 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:yakmoya/common/component/normal_appbar.dart';
 import 'package:yakmoya/image_search_screen.dart';
 import 'package:yakmoya/pill/pill_picture/view/text_search_screen.dart';
+import 'package:yakmoya/user/view/info_web_view.dart';
 
 import '../../common/const/colors.dart';
 
 class SearchScreen extends StatelessWidget {
+  late final WebViewController _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class SearchScreen extends StatelessWidget {
             children: [
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
@@ -38,7 +39,7 @@ class SearchScreen extends StatelessWidget {
                       "📸 사진을 통해 찾을 수도 있고\n🔍 검색을 통해 찾을수도 있어요!\n",
                       textAlign: TextAlign.center, // 텍스트를 중앙 정렬
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       maxLines: 3,
                     ),
                   ),
@@ -67,8 +68,7 @@ class SearchScreen extends StatelessWidget {
                   );
                 },
                 title: '이름으로 검색하기',
-                description:
-                '직접 검색하여 알약정보를 알아봐요!',
+                description: '직접 검색하여 알약정보를 알아봐요!',
                 svgAssetPath: 'assets/img/text.svg',
               ),
               _buildClickableContainer(
@@ -76,13 +76,12 @@ class SearchScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TextSearchScreen(),
+                      builder: (context) => InfoWebView()
                     ),
                   );
                 },
                 title: '약학정보원에서 검색하기',
-                description:
-                '직접 검색하여 알약정보를 알아봐요!',
+                description: '직접 검색하여 알약정보를 알아봐요!',
                 svgAssetPath: 'assets/img/link.svg',
               ),
             ],
@@ -92,8 +91,6 @@ class SearchScreen extends StatelessWidget {
     );
   }
 }
-
-
 
 Widget _buildClickableContainer({
   required VoidCallback onTap,
@@ -141,7 +138,8 @@ Widget _buildClickableContainer({
                 ),
               ),
               SizedBox(width: 5),
-              Expanded( // 텍스트가 SVG 옆에 오도록 Expanded로 감싸기
+              Expanded(
+                // 텍스트가 SVG 옆에 오도록 Expanded로 감싸기
                 child: Text(
                   title,
                   style: TextStyle(
@@ -167,5 +165,3 @@ Widget _buildClickableContainer({
     ),
   );
 }
-
-
