@@ -7,6 +7,7 @@ import 'package:yakmoya/image_search_screen.dart';
 import 'package:yakmoya/common/const/colors.dart';
 import 'package:yakmoya/pill/pill_picture/view/text_search_screen.dart';
 import 'package:yakmoya/user/model/user_model.dart';
+import 'package:yakmoya/user/model/user_pill_model.dart';
 import 'package:yakmoya/user/provider/user_me_provider.dart';
 import 'package:yakmoya/user/view/splash_screen.dart';
 
@@ -24,33 +25,51 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userMeProvider);
+    final pillsState = ref.watch(pillsProvider);
+
     UserModel? user;
+    List<UserPillModel>? pills;
+
+    // User 상태 확인
     if (userState is UserModel) {
-      user = userState; // UserModel로 캐스팅
+      user = userState;
     }
-    // user 또는 userPointState가 로딩 중일 때 로딩 인디케이터를 표시
-    if (user == null) {
-      print('로딩중...');
-      return const SplashScreen();
+
+    // Pills 상태 확인
+    if (pillsState is AsyncData<List<UserPillModel>>) {
+      pills = pillsState.value;
     }
+
+    // 로딩 상태 또는 에러 상태일 때 처리
+    if (pills == null || user == null) {
+      // 여기에 로딩 또는 에러 상태일 때 보여줄 위젯을 추가하세요.
+      // 예: return LoadingIndicator(); 또는 return ErrorIndicator();
+      return SplashScreen(); // 임시로 로딩 인디케이터 사용
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SvgPicture.asset(
-              'assets/img/homelogo.svg',
+            Image.asset(
+              'assets/img/applogo.png',
+              width: 120,
+              height: 120,
+            ),
+            SizedBox(
+              width: 150,
             ),
             InkWell(
               child: SvgPicture.asset(
                 'assets/img/alarm.svg',
-                width: 40,
-                height: 40,
+                width: 35,
+                height: 35,
               ),
               onTap: () {
                 Navigator.push(
@@ -62,12 +81,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
             ),
             SizedBox(
-              width: 30,
+              width: 15,
             ),
             SvgPicture.asset(
               'assets/img/setting.svg',
-              width: 40,
-              height: 40,
+              width: 35,
+              height: 35,
             ),
           ],
         ),
@@ -82,148 +101,155 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '안녕하세요.\n${user.name}님',
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 26,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '안녕하세요 \n${user?.name ?? "User"}님!',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 26,
+                  ),
+                ),
+                SvgPicture.asset('assets/img/usercircle.svg'),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
-              child: Container(
-                width: 370,
-                height: 100,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1.0,
+              child: Card(
+                child: Container(
+                  width: 370,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1.0,
+                      color: BLUE_BLUE_COLOR,
+                    ),
                     color: BLUE_BLUE_COLOR,
+                    borderRadius: BorderRadius.circular(7.0),
                   ),
-                  color: BLUE_BLUE_COLOR,
-                  borderRadius: BorderRadius.circular(7.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 18,
-                          child: Text(
-                            '내 약통',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: PRIMARY_BLUE_COLOR,
-                              fontWeight: FontWeight.w700,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 18,
+                            child: Text(
+                              '내 약통',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: PRIMARY_BLUE_COLOR,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 40,
-                          child: Text(
-                            '알약을 추가하여 상호작용 여부를 확인해 보세요!',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[600],
-                              fontWeight: FontWeight.w700,
+                        Expanded(
+                          child: Container(
+                            height: 40,
+                            child: Text(
+                              '알약을 추가하여 상호작용 여부를 확인해 보세요!',
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.grey[700],
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                           ),
                         ),
-                      ), // GridView.builder(gridDelegate: gridDelegate, itemBuilder: itemBuilder)
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15), // 모서리를 원형으로 깎음
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        child: GridView.builder(
-                          shrinkWrap: true, // GridView를 Column 내부에 넣을 때 필요
-                          physics: NeverScrollableScrollPhysics(), // 스크롤 동작 비활성화
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4, // 한 줄에 4개의 아이템
-                            childAspectRatio: 1, // 아이템의 가로세로 비율
-                            crossAxisSpacing: 10, // 수평 간격
-                            mainAxisSpacing: 10, // 수직 간격
-                          ),
-                          itemCount: 8, // 총 8개의 아이템
-                          itemBuilder: (context, index) {
-                            // 첫 번째 아이템인 경우
-                            if (index == 0) {
-                              return GestureDetector(
-                                onTap: () {
-                                  // showDialog 구현
-                                },
-                                child: Column(
-                                  children: [
-                                    ClipOval(
-                                      child: SvgPicture.asset(
-                                        'assets/img/plus.svg',
-                                        width: 60,
-                                        height: 60,
-                                      ),
-                                    ),
-                                    Text('추가하기',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight:
-                                                FontWeight.w700)), // 텍스트 크기 조정
-                                  ],
-                                ),
-                              );
-                            }
-                            // 나머지 아이템들
-                            return Column(
-                              children: [
-                                ClipOval(
-                                  child: SvgPicture.asset(
-                                    'assets/img/plus.svg', // 추후 변경 가능
-                                    width: 60,
-                                    height: 60,
-                                  ),
-                                ),
-                                Text('알약${index}',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.grey[500]
-                                    )), // 텍스트 크기 조정
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: LoginNextButton(
-                        onPressed: () {},
-                        buttonName: '검사하기',
-                        isButtonEnabled: true,
-                        color: PRIMARY_BLUE_COLOR,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            Expanded(
+              child: buildPillsGridView(pillsState),
+            ),
+            LoginNextButton(
+              onPressed: () {},
+              buttonName: '검사하기',
+              isButtonEnabled: true,
+              color: PRIMARY_BLUE_COLOR,
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildPillsGridView(AsyncValue<List<UserPillModel>> pillsState) {
+    return pillsState.when(
+      data: (pills) => GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          childAspectRatio: 1,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
+        itemCount: 8,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return buildAddPill();
+          } else {
+            final pill = index - 1 < pills.length ? pills[index - 1] : null;
+            return pill != null
+                ? buildPillItem(pill)
+                : buildDefaultPillItem(index);
+          }
+        },
+      ),
+      loading: () => SplashScreen(), // 로딩 상태 처리
+      error: (error, stack) => Text('Error: $error'), // 에러 상태 처리
+    );
+  }
+
+  Widget buildAddPill() {
+    return Column(
+      children: [
+        SvgPicture.asset('assets/img/plus2.svg', width: 60, height: 60),
+        Text(
+          '추가하기',
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+        ),
+      ],
+    );
+  }
+
+  Widget buildPillItem(UserPillModel pill) {
+    return Column(
+      children: [
+        Image.network(
+          pill.img,
+          height: 60,
+        ),
+        Text(
+          pill.name,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: PRIMARY_BLUE_COLOR,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
+
+  Widget buildDefaultPillItem(int index) {
+    return Column(
+      children: [
+        SvgPicture.asset('assets/img/plus2.svg', width: 60, height: 60),
+        Text('알약 $index',
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: Colors.grey[500])),
+      ],
     );
   }
 }

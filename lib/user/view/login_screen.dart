@@ -66,7 +66,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '',
-      backgroundColor: PRIMARY_BLUE_COLOR,
+      backgroundColor: Colors.white,
       child: GestureDetector(
         child: SafeArea(
           child: SingleChildScrollView(
@@ -146,6 +146,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               height: 10,
                             ),
                             LoginNextButton(
+                              color: SUB_BLUE_COLOR,
                               buttonName: _isLoading ? '로그인 중...' : '로그인', // 버튼 텍스트 조건부 설정
                               isButtonEnabled: _isButtonEnabled && !_isLoading, // 로딩 중일 때 버튼 비활성화
                               onPressed: () async {
