@@ -1,13 +1,15 @@
 PODS:
+  - app_settings (5.1.1):
+    - Flutter
   - Firebase/CoreOnly (10.18.0):
     - FirebaseCore (= 10.18.0)
   - Firebase/Messaging (10.18.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 10.18.0)
-  - firebase_core (2.23.0):
+  - firebase_core (2.24.2):
     - Firebase/CoreOnly (= 10.18.0)
     - Flutter
-  - firebase_messaging (14.7.5):
+  - firebase_messaging (14.7.9):
     - Firebase/Messaging (= 10.18.0)
     - firebase_core
     - Flutter
@@ -131,8 +133,11 @@ PODS:
     - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
+  - webview_flutter_wkwebview (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
@@ -148,6 +153,7 @@ DEPENDENCIES:
   - tflite (from `.symlinks/plugins/tflite/ios`)
   - uni_links (from `.symlinks/plugins/uni_links/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
   trunk:
@@ -173,6 +179,8 @@ SPEC REPOS:
     - TensorFlowLiteC
 
 EXTERNAL SOURCES:
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
@@ -201,11 +209,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/uni_links/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
   Firebase: 414ad272f8d02dfbf12662a9d43f4bba9bec2a06
-  firebase_core: 29d66baf806970cda37c93621b27cd369b27db1b
-  firebase_messaging: 0a39f2514e1f27b0274b0d2fa99048f57856ee7c
+  firebase_core: 0af4a2b24f62071f9bf283691c0ee41556dcb3f5
+  firebase_messaging: 875385354f623750aa03204a028d640108bc3412
   FirebaseCore: 2322423314d92f946219c8791674d2f3345b598f
   FirebaseCoreInternal: b444828ea7cfd594fca83046b95db98a2be4f290
   FirebaseInstallations: 033d199474164db20c8350736842a94fe717b960
@@ -237,6 +248,7 @@ SPEC CHECKSUMS:
   tflite: 7acd11db0915e2d90ab90474413068568eb605f0
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
   url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
+  webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
 PODFILE CHECKSUM: cf4e69e6ef95c746356b82e0964da44a5cdde999
 
