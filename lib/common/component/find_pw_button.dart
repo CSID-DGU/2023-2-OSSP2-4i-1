@@ -22,7 +22,7 @@ class FindPWButton extends StatelessWidget {
       child: SizedBox(
         child: TextButton(
           style: TextButton.styleFrom(
-              primary: SUB_BLUE_COLOR,
+              backgroundColor: SUB_BLUE_COLOR,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(1),
                   side: BorderSide(
@@ -42,8 +42,8 @@ class FindPWButton extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.grey[700],
+              fontSize: 16.0,
+              color: Colors.white,
               fontWeight: FontWeight.w300,
             ),
           ),
