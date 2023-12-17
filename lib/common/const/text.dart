@@ -4,7 +4,7 @@ import 'package:yakmoya/common/const/colors.dart';
 
 TextStyle customTextStyle = TextStyle(
   fontWeight: FontWeight.w500,
-  fontSize: 16.0,
+  fontSize: 20.0,
   color: Colors.black,
 );
 

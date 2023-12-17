@@ -84,7 +84,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           border: baseBorder,
           focusedBorder: baseBorder.copyWith(
             borderSide: baseBorder.borderSide.copyWith(
-              color: PRIMARY_PURPLE_COLOR,
+              color: PRIMARY_BLUE_COLOR,
             ),
           ),
           enabledBorder: baseBorder,

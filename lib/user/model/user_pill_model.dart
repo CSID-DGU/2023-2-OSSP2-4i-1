@@ -20,7 +20,7 @@ class UserPillModelSuccess extends UserPillModelBase {
 }
 @JsonSerializable()
 class UserPillModel extends UserPillModelBase{
-  String id;
+  int id;
   String name;
   String img;
 

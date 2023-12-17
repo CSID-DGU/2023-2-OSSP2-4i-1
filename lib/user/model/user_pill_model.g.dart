@@ -8,7 +8,7 @@ part of 'user_pill_model.dart';
 
 UserPillModel _$UserPillModelFromJson(Map<String, dynamic> json) =>
     UserPillModel(
-      id: json['id'] as String,
+      id: json['id'] as int,
       name: json['name'] as String,
       img: json['img'] as String,
     );
