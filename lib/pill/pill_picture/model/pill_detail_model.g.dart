@@ -10,6 +10,7 @@ PillDetailModel _$PillDetailModelFromJson(Map<String, dynamic> json) =>
     PillDetailModel(
       id: json['id'] as int,
       name: json['name'] as String,
+      imgLink: json['img_link'] as String,
       pillEffect: json['pill_effect'] as String,
       pillDetail: json['pill_detail'] as String,
       pillMethod: json['pill_method'] as String,
@@ -19,6 +20,7 @@ Map<String, dynamic> _$PillDetailModelToJson(PillDetailModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'img_link': instance.imgLink,
       'pill_effect': instance.pillEffect,
       'pill_detail': instance.pillDetail,
       'pill_method': instance.pillMethod,
