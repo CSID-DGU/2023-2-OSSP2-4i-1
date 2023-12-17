@@ -11,21 +11,44 @@ class SelectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: PRIMARY_BLUE_COLOR,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(child: Text('이 약 모야?', style: TextStyle(fontSize: 34,fontWeight: FontWeight.bold,color: Colors.black))),
-              Center(child: Text('YAKMOYA', style: TextStyle(fontSize: 64,fontWeight: FontWeight.bold,color: Colors.black))),
-              Image.asset('assets/img/logo.png',width: 0.5,),
-              SizedBox(height: 24),
+              // Center(
+              //   child: Text(
+              //     '',
+              //     style: TextStyle(
+              //       fontSize: 34,
+              //       fontWeight: FontWeight.bold,
+              //       color: Colors.black,
+              //       fontFamily: 'Jalnan2', // 폰트 적용
+              //     ),
+              //   ),
+              // ),
+              Row(
+                children: [
+                  SizedBox(width: 60),
+                  Image.asset('assets/img/realapplogo.png',width: 90,),
+                  Text(
+                    '약모야',
+                    style: TextStyle(
+                      fontSize: 54,
+                      fontWeight: FontWeight.bold,
+                      color: SUB_BLUE_COLOR,
+                      fontFamily: 'Jalnan2', // 폰트 적용
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 150,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
-                  height: 55,
+                  height: 60,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(
@@ -35,21 +58,22 @@ class SelectScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: PRIMARY_BLUE_COLOR,
                       primary: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                           side: BorderSide(
                             width: 2,
-                            color: Colors.white,
+                            color: PRIMARY_BLUE_COLOR,
                           )
                       ),
                     ),
                     child: Text(
                       '로그인',
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: Colors.black,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -59,7 +83,7 @@ class SelectScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
-                  height: 55,
+                  height: 60,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(
@@ -69,21 +93,21 @@ class SelectScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
+                      backgroundColor: PRIMARY_BLUE_COLOR,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                         side: BorderSide(
                           width: 1,
-                          color: Colors.white,
+                          color: PRIMARY_BLUE_COLOR,
                         ),
                       ),
                     ),
                     child: Text(
                       '회원가입',
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: Colors.black,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                        color: Colors.white,
                       ),
                     ),
                   ),
