@@ -15,4 +15,4 @@ final simulatorIp = '127.0.0.1:3000';
 // final ip = Platform.isIOS ? simulatorIp : emulatorIp;
 
 
-final ip = 'localhost:8000';
+final ip = 'ec2-13-53-39-131.eu-north-1.compute.amazonaws.com';
