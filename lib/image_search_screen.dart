@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 import 'package:yakmoya/common/component/custom_appbar.dart';
@@ -13,6 +14,7 @@ import 'package:yakmoya/common/view/default_layout.dart';
 import 'package:yakmoya/pill/pill_picture/model/pill_search_model.dart';
 import 'package:yakmoya/pill/pill_picture/provider/pill_search_provider.dart';
 import 'package:yakmoya/pill/pill_picture/view/image_search_results_screen.dart';
+import 'package:yakmoya/user/view/flitering_screen.dart';
 import 'package:yakmoya/user/view/splash_screen.dart';
 
 class ImageSearchScreen extends ConsumerStatefulWidget {
@@ -28,6 +30,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
   final picker = ImagePicker();
   List? _outputs;
   PillSearchModel? testModel;
+  String scannedText = "";    // ocr로 스캔한 문장 저장
 
   // 앱이 실행될 때 loadModel 호출
   @override
@@ -84,7 +87,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
     Tflite.close();
     await Tflite.loadModel(
       model: "assets/tflite/model_color.tflite",
-      labels: "assets/labels/labels_color2.txt",
+      labels: "assets/labels/labels_color.txt",
     ).then((value) {
       setState(() {
         //_loading = false;
@@ -104,8 +107,25 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
 
   // 이미지 분류
   Future classifyImage(File image) async {
-    print("asdasddas$image");
 
+    // OCR
+    final InputImage inputImage = InputImage.fromFilePath(image.path);
+
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+
+    RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+
+    await textRecognizer.close();
+
+    scannedText = "";
+    for (TextBlock block in recognizedText.blocks) {
+      for (TextLine line in block.lines) {
+        // scannedText = scannedText + line.text + "\n";
+        scannedText = scannedText + line.text;
+      }
+    }
+
+    // 특성 추출
     // custom_shape 예측
     loadModel1();
     var output1 = await Tflite.runModelOnImage(
@@ -115,7 +135,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-        );
+    );
 
     // drug_shape 예측
     loadModel2();
@@ -126,7 +146,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-        );
+    );
 
     // line 예측
     loadModel3();
@@ -137,7 +157,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-        );
+    );
 
     // color 예측
     loadModel4();
@@ -148,19 +168,17 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-        );
+    );
 
     // 정제가 아니면 분리선이 존재하지 않음
-    if (output1![0]['label'] != '정제') {
-      output3 = [
-        {"index": 2, "label": "X", "confidence": 1}
-      ];
+    if (output1![0]['label'] != '정제'){
+      output3 = [{"index": 2, "label": "X", "confidence": 1}];
     }
 
-    print('Raw output from TFLite: $output1'); // 정제(labelForms)
-    print('Raw output from TFLite: $output2'); // 장방형(labelShapes)
-    print('Raw output from TFLite: $output3'); // 분리선?
-    print('Raw output from TFLite: $output4'); // 하양(color)
+    print('Raw output from TFLite: $output1');
+    print('Raw output from TFLite: $output2');
+    print('Raw output from TFLite: $output3');
+    print('Raw output from TFLite: $output4');
 
     // 예측한 4개의 값 저장
     // 출력 값 예시
@@ -170,26 +188,11 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
     // output4 = [{index: 14, label: 하양, confidence: 0.8666980266571045}]
 
     setState(() {
-      // testModel = PillSearchModel(
-      //   labelForms: "경질캡슐제",
-      //   labelShapes: "장방형",
-      //   labelColor1: "하양",
-      //   labelColor2: "남색",
-      //   labelPrintFront: "HL PGN 50",
-      //   labelPrintBack: "",
-      //   labelLineFront: "",
-      //   labelLineBack: "",
-      // );
-
       _outputs = [output1, output2, output3, output4];
-      testModel = PillSearchModel(
-        labelForms: _outputs![0][0]['label'].toString(),
-        labelShapes: _outputs![1][0]['label'].toString(),
-        labelColor1: _outputs![3][0]['label'].toString(),
-        labelColor2: _outputs![3][0]['label'].toString(),
-      );
     });
     print(_outputs);
+    print('here');
+    print(scannedText.length);
   }
 
   // 이미지를 보여주는 위젯
@@ -241,14 +244,14 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                     ),
                   ),
                   Text(
-                    '앞면 색상: ${_outputs![3][0]['label'].toString()}',
+                    '색상: ${_outputs![3][0]['label'].toString()}',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
                     ),
                   ),
                   Text(
-                    '뒷면 색상: ${_outputs![3][0]['label'].toString()}',
+                    '식별 문자: $scannedText',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
@@ -310,10 +313,10 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
     }
   }
 
-  Future<void> searchImage() async {
-    print(testModel!.labelColor2);
-    ref.read(pillSearchProvider.notifier).searchImage(testModel!);
-  }
+  // Future<void> searchImage() async {
+  //   print(testModel!.labelColor2);
+  //   ref.read(pillSearchProvider.notifier).searchImage(testModel!);
+  // }
 
   Widget buildSearchResults(PillSearchState state) {
     switch (state.pictureSearchStatus) {
@@ -395,10 +398,16 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                   ),
                   LoginNextButton(
                     onPressed: () async {
-                      await searchImage();
+                      // await searchImage();
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => SearchResultsScreen(),
+                          builder: (context) => FilteringScreen(
+                            form: _outputs![0][0]['label'].toString(),
+                            shape: _outputs![1][0]['label'].toString(),
+                            color: _outputs![3][0]['label'].toString(),
+                            text: scannedText,
+                            image: _image!,
+                          ),
                         ),
                       );
                     },
@@ -406,6 +415,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                     isButtonEnabled: true,
                     color: SUB_BLUE_COLOR,
                   ),
+
                 ],
               ),
             ),
