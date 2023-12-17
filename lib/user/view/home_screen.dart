@@ -9,6 +9,7 @@ import 'package:yakmoya/pill/pill_picture/view/text_search_screen.dart';
 import 'package:yakmoya/user/model/user_model.dart';
 import 'package:yakmoya/user/model/user_pill_model.dart';
 import 'package:yakmoya/user/provider/user_me_provider.dart';
+import 'package:yakmoya/user/view/setting_screen.dart';
 import 'package:yakmoya/user/view/splash_screen.dart';
 
 import 'alarm_screen.dart';
@@ -83,10 +84,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             SizedBox(
               width: 15,
             ),
-            SvgPicture.asset(
-              'assets/img/setting.svg',
-              width: 35,
-              height: 35,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingScreen()),
+                );
+              },
+              child: SvgPicture.asset(
+                'assets/img/setting.svg',
+                width: 35,
+                height: 35,
+              ),
             ),
           ],
         ),
@@ -169,7 +178,66 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: buildPillsGridView(pillsState),
             ),
             LoginNextButton(
-              onPressed: () {},
+              onPressed: () async {
+                final interactionResult =
+                    await ref.read(interactionProvider.future);
+                print(interactionResult);
+                if (interactionResult.isNotEmpty) {
+                  final pillName1 = interactionResult.first.pillName1;
+                  final pillName2 = interactionResult.first.pillName2;
+                  // final clinical_effect = interactionResult.first.clinicalEffect.first;
+                  // 상호작용 결과가 있을 경우 처리
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      backgroundColor: Colors.white,
+                      title: Text("상호작용 경고"),
+                      content: Column(
+                        children: [
+                          Text(
+                            pillName1,
+                            style: TextStyle(
+                              color: PRIMARY_RED_COLOR,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Text(
+                            pillName2,
+                            style: TextStyle(
+                              color: PRIMARY_RED_COLOR,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("확인"),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  // 상호작용 결과가 없을 경우 처리
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      backgroundColor: Colors.white,
+                      title: Text("안전 확인"),
+                      content: Text("약물 간 상호작용이 발견되지 않았습니다."),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("확인"),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
               buttonName: '검사하기',
               isButtonEnabled: true,
               color: PRIMARY_BLUE_COLOR,
@@ -191,7 +259,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),
-        itemCount: 8,
+        itemCount: 12,
         itemBuilder: (context, index) {
           if (index == 0) {
             return buildAddPill();
