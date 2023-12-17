@@ -58,17 +58,17 @@ TextStyle whiteMiddleTextStyle = TextStyle(
 
 
 const textBrownStyle = TextStyle(
-  fontWeight: FontWeight.w400,
+  fontWeight: FontWeight.w500,
   color: Colors.black,
-  fontSize: 15,
+  fontSize: 20,
 );
 
 // 0D0D0D
 
 const signupReqStyle = TextStyle(
-  fontWeight: FontWeight.w400,
+  fontWeight: FontWeight.w600,
   color: GREY_PRIMARY_COLOR,
-  fontSize: 13,
+  fontSize: 18,
 );
 
 
