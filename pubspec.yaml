@@ -52,6 +52,7 @@ dependencies:
   uuid: ^3.0.7
   debounce_throttle: ^2.0.0
   flutter_local_notifications: ^15.1.0+1
+  flutter_localization: ^0.1.13
   permission_handler: ^10.4.3
   http: ^1.1.0
   flutter_svg: ^2.0.9
@@ -64,13 +65,11 @@ dependencies:
   iamport_flutter: ^0.10.13
   url_launcher: ^6.1.12
   webview_flutter: ^4.4.2
+  app_settings: ^5.1.1
+
 
 
 dev_dependencies:
-flutter_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/img/realapplogo.png"
   flutter_test:
     sdk: flutter
 
@@ -80,10 +79,19 @@ flutter_icons:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  build_runner: '>=2.3.0 <4.0.0'
+  build_runner: ^2.4.6
   json_serializable: ^6.6.0
   retrofit_generator: '>=5.0.0 <6.0.0'
   riverpod_generator: ^2.2.3
+  flutter_launcher_icons: "^0.13.1"
+
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/img/realapplogo.png"
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
