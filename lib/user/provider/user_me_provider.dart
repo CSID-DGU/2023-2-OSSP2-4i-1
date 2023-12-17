@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:yakmoya/common/const/data.dart';
 import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
+import 'package:yakmoya/user/model/pill_interaction_model.dart';
 import 'package:yakmoya/user/model/signup_response.dart';
 import 'package:yakmoya/user/model/signup_user_model.dart';
 import 'package:yakmoya/user/model/user_model.dart';
@@ -14,7 +15,14 @@ import 'package:yakmoya/user/repository/user_me_repository.dart';
 import '../../common/dio/dio.dart';
 import '../../common/stoarge/secure_stoarge.dart';
 
+final interactionProvider = FutureProvider<List<PillInteractionModel>>((ref) async {
+  print('now1');
+  final userMeRepository = ref.watch(userMeRepositoryProvider);
+  return userMeRepository.interaction();
+});
+
 final pillsProvider = FutureProvider<List<UserPillModel>>((ref) async {
+  print('now2');
   final userMeRepository = ref.watch(userMeRepositoryProvider);
   return userMeRepository.getPills();
 });
