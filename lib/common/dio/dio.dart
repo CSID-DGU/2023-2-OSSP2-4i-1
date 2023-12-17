@@ -93,7 +93,7 @@ class CustomInterceptor extends Interceptor {
       try {
         print('token refresh start@@');
         final resp = await dio.post(
-          'http://localhost:8000/authentication/token',
+          'http://$ip/token',
           options: Options(
             headers: {
               'Cookie':cookie,
