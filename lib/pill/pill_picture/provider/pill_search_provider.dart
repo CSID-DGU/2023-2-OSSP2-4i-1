@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yakmoya/common/dio/dio.dart';
+import 'package:yakmoya/pill/pill_picture/model/pill_detail_model.dart';
 import 'package:yakmoya/pill/pill_picture/model/pill_search_model.dart';
 import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
 import 'package:yakmoya/pill/pill_picture/repository/pill_search_repository.dart';
@@ -13,22 +14,26 @@ class PillSearchState {
   final TextSearchStatus status;
   final PictureSearchStatus pictureSearchStatus;
   final List<SearchResponseModel> results; // 검색 결과를 저장하는 필드 추가
+  final PillDetailModel? pillDetailModel;
 
   PillSearchState({
     this.pictureSearchStatus = PictureSearchStatus.initial,
     this.status = TextSearchStatus.initial,
     this.results = const [],
+    this.pillDetailModel,
   });
 
   PillSearchState copyWith({
     PictureSearchStatus? pictureSearchStatus,
     TextSearchStatus? status,
     List<SearchResponseModel>? results,
+    PillDetailModel? pillDetailModel,
   }) {
     return PillSearchState(
       pictureSearchStatus: pictureSearchStatus ?? this.pictureSearchStatus,
       status: status ?? this.status,
       results: results ?? this.results,
+      pillDetailModel:  pillDetailModel ?? this.pillDetailModel,
     );
   }
 }
@@ -42,12 +47,20 @@ final pillSearchProvider =
   },
 );
 
-final pillSearchDetailProvider =
-Provider.family<SearchResponseModel?, String>((ref, id) {
-  final state = ref.watch(pillSearchProvider);
+// final pillSearchDetailProvider =
+// Provider.family<SearchResponseModel?, String>((ref, id) {
+//   final state = ref.watch(pillSearchProvider);
+//   print('kk');
+//   if(state is! PillSearchModel){
+//     return null;
+//   }
+//   print(state.results);
+//   print('kk');
+//   return state.results.firstWhereOrNull((element) => element.id == id);
+// });
 
-  return state.results.firstWhereOrNull((element) => element.id.toString() == id);
-});
+
+
 
 class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
   final PillSearchRepository repository;
@@ -60,11 +73,22 @@ class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
           ),
         );
 
-  void getDetail({
-    required String id,
-}) async{
-    await repository.getPillDetail(id: id);
+//   void getDetail({
+//     required String id,
+// }) async{
+//     final resp = await repository.getPillDetail(id: id);
+//
+//   }
+
+  Future<void> getPillDetail(String id) async {
+    try {
+      final detail = await repository.getPillDetail(id: id);
+      state = state.copyWith(pillDetailModel: detail);
+    } catch (e) {
+      // 에러 처리
+    }
   }
+
 
   Future<void> searchImage(PillSearchModel searchModel) async {
     state = state.copyWith(pictureSearchStatus: PictureSearchStatus.loading);
@@ -110,6 +134,11 @@ class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
     return response;
   }
 
+  Future<void>deletePill(String id) async{
+    final response = await repository.deletePill(id: id);
+    return response;
+  }
+
   Future<void> searchText(String searchText) async {
     if (searchText.isEmpty) {
       // 검색 텍스트가 비어있는 경우
@@ -136,4 +165,6 @@ class PillSearchStateNotifier extends StateNotifier<PillSearchState> {
           results: []); // 에러가 발생한 경우 결과를 빈 리스트로 설정
     }
   }
+
+
 }
