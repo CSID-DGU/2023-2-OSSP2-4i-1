@@ -9,9 +9,9 @@ part of 'pill_interaction_model.dart';
 PillInteractionModel _$PillInteractionModelFromJson(
         Map<String, dynamic> json) =>
     PillInteractionModel(
-      pillName1: json['pillName1'] as String,
-      pillName2: json['pillName2'] as String,
-      clinicalEffect: (json['clinicalEffect'] as List<dynamic>)
+      pillName1: json['pill_name1'] as String,
+      pillName2: json['pill_name2'] as String,
+      clinicalEffect: (json['clinical_effect'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
     );
@@ -19,7 +19,7 @@ PillInteractionModel _$PillInteractionModelFromJson(
 Map<String, dynamic> _$PillInteractionModelToJson(
         PillInteractionModel instance) =>
     <String, dynamic>{
-      'pillName1': instance.pillName1,
-      'pillName2': instance.pillName2,
-      'clinicalEffect': instance.clinicalEffect,
+      'pill_name1': instance.pillName1,
+      'pill_name2': instance.pillName2,
+      'clinical_effect': instance.clinicalEffect,
     };
