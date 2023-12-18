@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -49,6 +50,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       // 여기에 로딩 또는 에러 상태일 때 보여줄 위젯을 추가하세요.
       // 예: return LoadingIndicator(); 또는 return ErrorIndicator();
       return SplashScreen(); // 임시로 로딩 인디케이터 사용
+    }
+
+    String parsePillName(String name) {
+      final mgIndex = name.indexOf('mg');
+      if (mgIndex != -1) {
+        // 'mg'가 존재하면 'mg'를 포함하여 그 전까지의 문자열을 반환합니다.
+        return name.substring(0, mgIndex + 2);
+      } else {
+        // 'mg'가 없으면 첫 번째 공백 전까지의 문자열을 반환합니다.
+        final firstSpaceIndex = name.indexOf(' ');
+        if (firstSpaceIndex != -1) {
+          return name.substring(0, firstSpaceIndex);
+        }
+      }
+      // 위 조건에 해당하지 않으면 원본 문자열을 그대로 반환합니다.
+      return name;
     }
 
     return Scaffold(
@@ -148,7 +165,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             child: Text(
                               '내 약통',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 22,
                                 color: PRIMARY_BLUE_COLOR,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -163,7 +180,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               style: TextStyle(
                                 fontSize: 17,
                                 color: Colors.grey[700],
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -185,29 +202,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 if (interactionResult.isNotEmpty) {
                   final pillName1 = interactionResult.first.pillName1;
                   final pillName2 = interactionResult.first.pillName2;
-                  // final clinical_effect = interactionResult.first.clinicalEffect.first;
+                  final clinical_effect =
+                      interactionResult.first.clinicalEffect.first;
                   // 상호작용 결과가 있을 경우 처리
                   showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      backgroundColor: Colors.white,
-                      title: Text("상호작용 경고"),
+                    builder: (context) => CupertinoAlertDialog(
+                      title: Text("상호작용 중복 경고"),
                       content: Column(
                         children: [
                           Text(
-                            pillName1,
+                            '${parsePillName(pillName1)}\n${parsePillName(pillName2)}',
                             style: TextStyle(
                               color: PRIMARY_RED_COLOR,
-                              fontWeight: FontWeight.w500,
                               fontSize: 20,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           Text(
-                            pillName2,
+                            '${clinical_effect}',
                             style: TextStyle(
-                              color: PRIMARY_RED_COLOR,
+                              color: Colors.black,
+                              fontSize: 18,
                               fontWeight: FontWeight.w500,
-                              fontSize: 20,
                             ),
                           ),
                         ],
