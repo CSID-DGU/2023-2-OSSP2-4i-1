@@ -70,6 +70,27 @@ class _UserMeRepository implements UserMeRepository {
   }
 
   @override
+  Future<void> alarm(alarmModel) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'accessToken': 'true'};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = alarmModel;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/alarm',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+  }
+
+  @override
   Future<List<UserPillModel>> getPills() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
