@@ -99,7 +99,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           children: [
 // 이메일 & TF
                             SizedBox(
-                              width: 50,
+                              width: 100,
                               height: 22,
                               child: Text(
                                 '이메일',
@@ -116,7 +116,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               height: 10.0,
                             ),
                             SizedBox(
-                              width: 60,
+                              width: 100,
                               height: 22,
                               child: Text(
                                 '비밀번호',
@@ -157,6 +157,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   await ref.read(userMeProvider.notifier).login(
                                     email: _emailController.text.trim(),
                                     password: _passwordController.text.trim(),
+
                                   );
                                 } catch (e) {
                                   // 로그인 실패 시 예외 처리

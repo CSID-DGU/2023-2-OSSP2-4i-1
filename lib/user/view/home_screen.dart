@@ -241,8 +241,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   // 상호작용 결과가 없을 경우 처리
                   showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      backgroundColor: Colors.white,
+                    builder: (context) => CupertinoAlertDialog(
                       title: Text("안전 확인"),
                       content: Text("약물 간 상호작용이 발견되지 않았습니다."),
                       actions: <Widget>[
