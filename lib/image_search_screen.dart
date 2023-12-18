@@ -19,8 +19,6 @@ import 'package:yakmoya/user/view/flitering_screen.dart';
 import 'package:yakmoya/user/view/splash_screen.dart';
 import 'package:image/image.dart' as img;
 
-
-
 class ImageSearchScreen extends ConsumerStatefulWidget {
   static String get routeName => 'image';
   const ImageSearchScreen({Key? key}) : super(key: key);
@@ -34,7 +32,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
   final picker = ImagePicker();
   List? _outputs;
   PillSearchModel? testModel;
-  String scannedText = "";    // ocr로 스캔한 문장 저장
+  String scannedText = ""; // ocr로 스캔한 문장 저장
 
   // 앱이 실행될 때 loadModel 호출
   @override
@@ -98,80 +96,99 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
       });
     });
   }
+
   hsvColor(double h, double s, double v) {
-    if (s < 0.2){
-      if (v >= 65){
+    if (s < 0.2) {
+      if (v >= 65) {
         return "흰색";
-      }
-      else if (v <= 10){
+      } else if (v <= 10) {
         return "검정";
-      }
-      else{
+      } else {
         return "회색";
       }
-    }
-    else{
-      if (h < 37){
-        if (s < 0.50){
+    } else {
+      if (h < 37) {
+        if (s < 0.50) {
           return "갈색";
-        }
-        else{
-          if (h < 16){
+        } else {
+          if (h < 16) {
             return "빨강";
-          }
-          else{
+          } else {
             return "주황";
           }
         }
-      }
-      else if( h < 64 ){
+      } else if (h < 64) {
         return "노랑";
-      }
-      else if ( h < 69){
+      } else if (h < 69) {
         return "연두";
-      }
-      else if ( h < 144){
+      } else if (h < 144) {
         return "초록";
-      }
-      else if ( h < 190 ){
+      } else if (h < 190) {
         return "청록";
-      }
-      else if ( h < 226 ){
+      } else if (h < 226) {
         return "파랑";
-      }
-      else if ( h < 275 ){
+      } else if (h < 275) {
         return "남색";
-      }
-      else if ( h < 290 ){
+      } else if (h < 290) {
         return "보라";
-      }
-      else if ( h < 320 ){
+      } else if (h < 320) {
         return "자주";
-      }
-      else {
+      } else {
         return "빨강";
       }
     }
   }
+
   // color 추출
   colorPredict(File image) {
     Image myImage = Image.file(image);
     final img.Image? imagec = img.decodeImage(image.readAsBytesSync());
 
-    Map<String, int> dict = {"빨강":0, "갈색":0, "주황":0, "노랑":0, "연두":0, "초록":0,
-      "청록":0, "파랑":0, "남색":0, "보라":0, "자주":0, "흰색":0, "검정":0, "회색":0};
+    Map<String, int> dict = {
+      "빨강": 0,
+      "갈색": 0,
+      "주황": 0,
+      "노랑": 0,
+      "연두": 0,
+      "초록": 0,
+      "청록": 0,
+      "파랑": 0,
+      "남색": 0,
+      "보라": 0,
+      "자주": 0,
+      "흰색": 0,
+      "검정": 0,
+      "회색": 0
+    };
 
-    Map<String, int> outdict = {"빨강":0, "갈색":0, "주황":0, "노랑":0, "연두":0, "초록":0,
-      "청록":0, "파랑":0, "남색":0, "보라":0, "자주":0, "흰색":0, "검정":0, "회색":0};
+    Map<String, int> outdict = {
+      "빨강": 0,
+      "갈색": 0,
+      "주황": 0,
+      "노랑": 0,
+      "연두": 0,
+      "초록": 0,
+      "청록": 0,
+      "파랑": 0,
+      "남색": 0,
+      "보라": 0,
+      "자주": 0,
+      "흰색": 0,
+      "검정": 0,
+      "회색": 0
+    };
 
     double h = 0;
     double s = 0;
     double v = 0;
 
-    for(int i = -1 * min(256, imagec!.width ~/ 2); i < min(256, imagec.width ~/ 2); i++) {
-      for (int j = -1 * min(256, imagec.height ~/ 2); j < min(256, imagec.height ~/ 2); j++) {
-        final int pixelColor = imagec.getPixel(
-            imagec.width ~/ 2 + (i),
+    for (int i = -1 * min(256, imagec!.width ~/ 2);
+        i < min(256, imagec.width ~/ 2);
+        i++) {
+      for (int j = -1 * min(256, imagec.height ~/ 2);
+          j < min(256, imagec.height ~/ 2);
+          j++) {
+        final int pixelColor = imagec.getPixel(imagec.width ~/ 2 + (i),
             imagec.height ~/ 2 + (j)); // 예: (10, 10) 위치의 픽셀 RGB 값
 
         final double red = img.getRed(pixelColor).toDouble();
@@ -211,8 +228,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
 
         if (i >= -200 && i <= 200 && j >= -200 && j <= 200) {
           dict[(hsvColor(H, S, V))] = (dict[(hsvColor(H, S, V))]! + 1);
-        }
-        else {
+        } else {
           outdict[(hsvColor(H, S, V))] = (outdict[(hsvColor(H, S, V))]! + 1);
         }
       }
@@ -221,8 +237,8 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
     var sortedDict = Map.fromEntries(
         dict.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
 
-    var sortedoutDict = Map.fromEntries(
-        outdict.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)));
+    var sortedoutDict = Map.fromEntries(outdict.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
 
     var ignoreList = [];
     var result = [];
@@ -230,23 +246,23 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
     //print(dict.values);
     //print(outdict.values);
 
-    for (String s in sortedoutDict.keys){
+    for (String s in sortedoutDict.keys) {
       //print(s + outdict[s].toString());
-      if (sortedoutDict[s]! >= 10000){
+      if (sortedoutDict[s]! >= 10000) {
         ignoreList.add(s);
       }
     }
-    for (String s in sortedDict.keys){
+    for (String s in sortedDict.keys) {
       //print(s + dict[s].toString());
-      if (sortedDict[s]! >= 10000 && !ignoreList.contains(s)){
+      if (sortedDict[s]! >= 10000 && !ignoreList.contains(s)) {
         result.add(s);
       }
     }
 
     return result;
   }
-  /// ############## 여기까지   ##########################################
 
+  /// ############## 여기까지   ##########################################
 
   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
   Future getImage(ImageSource imageSource) async {
@@ -260,21 +276,21 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
 
   // 이미지 분류
   Future classifyImage(File image) async {
-
     // OCR
     final InputImage inputImage = InputImage.fromFilePath(image.path);
 
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
-    RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+    RecognizedText recognizedText =
+        await textRecognizer.processImage(inputImage);
 
     await textRecognizer.close();
 
     scannedText = "";
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
-        // scannedText = scannedText + line.text + "\n";
-        scannedText = scannedText + line.text;
+        scannedText = scannedText + line.text + " ";
+        // scannedText = scannedText + line.text;
       }
     }
 
@@ -288,7 +304,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-    );
+        );
 
     // drug_shape 예측
     loadModel2();
@@ -299,7 +315,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-    );
+        );
 
     // line 예측
     loadModel3();
@@ -310,15 +326,17 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
         numResults: 1, // defaults to 5
         threshold: 0, // defaults to 0.1
         asynch: true // defaults to true
-    );
+        );
 
     // // color 예측
     // loadModel4();
     var output4 = colorPredict(image);
 
     // 정제가 아니면 분리선이 존재하지 않음
-    if (output1![0]['label'] != '정제'){
-      output3 = [{"index": 2, "label": "X", "confidence": 1}];
+    if (output1![0]['label'] != '정제') {
+      output3 = [
+        {"index": 2, "label": "X", "confidence": 1}
+      ];
     }
     print('Raw output from TFLite: $output1');
     print('Raw output from TFLite: $output2');
@@ -352,7 +370,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
             : Image.file(
                 File(_image!.path),
                 height: 335,
-          width: 335,
+                width: 335,
               ),
       ),
     );
@@ -372,41 +390,45 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                 children: <Widget>[
                   Text(
                     '검색 결과',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 17),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 20,
+                      color: PRIMARY_RED_COLOR,
+                    ),
                   ),
                   Text(
                     '제형: ${_outputs![0][0]['label'].toString()}',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 15.0,
+                      fontSize: 18.0,
                     ),
                   ),
                   Text(
                     '모양: ${_outputs![1][0]['label'].toString()}',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 15.0,
+                      fontSize: 18.0,
                     ),
                   ),
                   Text(
                     '구분선: ${_outputs![2][0]['label'].toString()}',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 15.0,
+                      fontSize: 18.0,
                     ),
                   ),
                   Text(
-                    '색상: ${_outputs![3].join(", ") ?? ""}',
+                    '색상: ${_outputs![3].join(", ").toString() ?? ""}',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 15.0,
+                      fontSize: 18.0,
                     ),
                   ),
                   Text(
                     '식별 문자: $scannedText',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 15.0,
+                      fontSize: 18.0,
                     ),
                   ),
                 ],
@@ -415,7 +437,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                 Center(
                   child: new TextButton(
                     child: new Text(
-                      "OK",
+                      "확인",
                       style: TextStyle(
                         color: PRIMARY_BLUE_COLOR,
                         fontWeight: FontWeight.w900,
@@ -550,13 +572,27 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                   ),
                   LoginNextButton(
                     onPressed: () async {
-                      // await searchImage();
+                      // 색상 데이터를 변수로 분리
+                      String color1 = "";
+                      String color2 = "";
+
+                      if (_outputs != null &&
+                          _outputs!.isNotEmpty &&
+                          _outputs![3].length > 0) {
+                        color1 = _outputs![3][0];
+                        if (_outputs![3].length > 1) {
+                          color2 = _outputs![3][1];
+                        }
+                      }
+
+                      // 필터링 화면으로 이동
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => FilteringScreen(
                             form: _outputs![0][0]['label'].toString(),
                             shape: _outputs![1][0]['label'].toString(),
-                            color: _outputs![3][0]['label'].toString(),
+                            color1: color1,
+                            color2: color2,
                             text: scannedText,
                             image: _image!,
                           ),
@@ -567,7 +603,6 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                     isButtonEnabled: true,
                     color: SUB_BLUE_COLOR,
                   ),
-
                 ],
               ),
             ),

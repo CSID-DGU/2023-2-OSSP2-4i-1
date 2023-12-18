@@ -20,7 +20,8 @@ import '../../common/const/colors.dart';
 class FilteringScreen extends ConsumerStatefulWidget {
   final String form;
   final String shape;
-  final String color;
+  final String color1;
+  final String color2;
   final String text;
   final File image;
 
@@ -28,7 +29,8 @@ class FilteringScreen extends ConsumerStatefulWidget {
     Key? key,
     required this.form,
     required this.shape,
-    required this.color,
+    required this.color1,
+    required this.color2,
     required this.text,
     required this.image,
   }) : super(key: key);
@@ -40,7 +42,8 @@ class FilteringScreen extends ConsumerStatefulWidget {
 class _FilteringScreenState extends ConsumerState<FilteringScreen> {
   late String selectedFormType;
   late String selectedShapeType;
-  late String selectedColorType;
+  late String selectedColorType1;
+  late String selectedColorType2;
   late String ocrText;
   late String formExcText;
 
@@ -58,7 +61,8 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
     super.initState();
     selectedFormType = widget.form; // 여기에서 widget 프로퍼티에 접근
     selectedShapeType = widget.shape;
-    selectedColorType = widget.color;
+    selectedColorType1 = widget.color1;
+    selectedColorType2 = widget.color2;
     ocrTextController.text = widget.text;
   }
 
@@ -78,8 +82,8 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
     final PillSearchModel searchModel = PillSearchModel(
       labelForms: finalSelectedFormType,
       labelShapes: selectedShapeType,
-      labelColor1: selectedColorType,
-      labelColor2: selectedColorType, // 필요에 따라 수정
+      labelColor1: selectedColorType1,
+      labelColor2: selectedColorType2, // 필요에 따라 수정
       labelLineBack: "",
       labelLineFront: "",
       labelPrintBack: ocrTextController.text.trim(),
@@ -102,7 +106,7 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
 
     // 여기에 위젯 구성
     return DefaultLayout(
-      backgroundColor: Colors.white,
+      backgroundColor: PRIMARY_BLUE_COLOR,
       title: '알약 필터링',
       child: SingleChildScrollView(
         child: Padding(
@@ -165,11 +169,11 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
               CustomDropdownButton(
                 dropdownWidth: 120,
                 items: colorTypes,
-                hintText: selectedColorType,
+                hintText: selectedColorType1,
                 onItemSelected: (value) {
                   setState(
                     () {
-                      selectedColorType = value;
+                      selectedColorType1 = value;
                     },
                   );
                   checkButtonEnabled();
@@ -180,11 +184,11 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
               CustomDropdownButton(
                 dropdownWidth: 120,
                 items: colorTypes,
-                hintText: selectedColorType,
+                hintText: selectedColorType2,
                 onItemSelected: (value) {
                   setState(
                     () {
-                      selectedColorType = value;
+                      selectedColorType2 = value;
                     },
                   );
                   checkButtonEnabled();
