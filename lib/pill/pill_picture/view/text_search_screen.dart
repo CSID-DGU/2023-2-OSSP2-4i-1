@@ -11,7 +11,6 @@ import 'package:yakmoya/user/view/search_widget.dart';
 import 'package:yakmoya/pill/pill_picture/model/search_response_model.dart';
 import 'package:yakmoya/user/view/splash_screen.dart';
 
-
 class TextSearchScreen extends ConsumerStatefulWidget {
   static String get routeName => 'text';
   const TextSearchScreen({super.key});
@@ -36,6 +35,22 @@ class _TextSearchScreenState extends ConsumerState<TextSearchScreen> {
   void dispose() {
     debouncer?.cancel();
     super.dispose();
+  }
+
+  String parsePillName(String name) {
+    final mgIndex = name.indexOf('mg');
+    if (mgIndex != -1) {
+      // 'mg'가 존재하면 'mg'를 포함하여 그 전까지의 문자열을 반환합니다.
+      return name.substring(0, mgIndex + 2);
+    } else {
+      // 'mg'가 없으면 첫 번째 공백 전까지의 문자열을 반환합니다.
+      final firstSpaceIndex = name.indexOf(' ');
+      if (firstSpaceIndex != -1) {
+        return name.substring(0, firstSpaceIndex);
+      }
+    }
+    // 위 조건에 해당하지 않으면 원본 문자열을 그대로 반환합니다.
+    return name;
   }
 
   void searchPill(String query) => debounce(
@@ -130,8 +145,15 @@ class _TextSearchScreenState extends ConsumerState<TextSearchScreen> {
   }
 
   Widget buildPill(SearchResponseModel pill) => ListTile(
-        title: Text(pill.name),
-        subtitle: Text('약 고유 아이디${pill.id}'),
+        title: Text(
+          parsePillName(pill.name),
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: GREY_PRIMARY_COLOR
+          ),
+        ),
+        // subtitle: Text('약 고유 아이디${pill.id}'),
         leading: Image.network(
           pill.imgLink,
           fit: BoxFit.cover,
