@@ -34,6 +34,8 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
   PillSearchModel? testModel;
   String scannedText = ""; // ocr로 스캔한 문장 저장
 
+  bool isSearch = false;
+
   // 앱이 실행될 때 loadModel 호출
   @override
   void initState() {
@@ -100,7 +102,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
   hsvColor(double h, double s, double v) {
     if (s < 0.2) {
       if (v >= 65) {
-        return "흰색";
+        return "하양";
       } else if (v <= 10) {
         return "검정";
       } else {
@@ -156,7 +158,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
       "남색": 0,
       "보라": 0,
       "자주": 0,
-      "흰색": 0,
+      "하양": 0,
       "검정": 0,
       "회색": 0
     };
@@ -173,7 +175,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
       "남색": 0,
       "보라": 0,
       "자주": 0,
-      "흰색": 0,
+      "하양": 0,
       "검정": 0,
       "회색": 0
     };
@@ -266,7 +268,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
 
   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
   Future getImage(ImageSource imageSource) async {
-    final image = await picker.pickImage(source: imageSource);
+    final image = await picker.pickImage(source: imageSource,imageQuality: 99);
 
     setState(() {
       _image = File(image!.path); // 가져온 이미지를 _image에 저장
@@ -381,7 +383,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
     if (_outputs != null && _outputs!.isNotEmpty) {
       showDialog(
           context: context,
-          barrierDismissible: false,
+          barrierDismissible: true,
           builder: (BuildContext context) {
             return CupertinoAlertDialog(
               content: Column(
@@ -444,6 +446,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                         fontSize: 20,
                       ),
                     ),
+
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -456,7 +459,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
       // Handle the case where _outputs is null or empty.
       showDialog(
           context: context,
-          barrierDismissible: false,
+          barrierDismissible: true,
           builder: (BuildContext context) {
             return AlertDialog(
               content: Column(
@@ -549,6 +552,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                       SignupEitherButton(
                         text: '사진 촬영',
                         onPressed: () async {
+                          isSearch = true;
                           await getImage(ImageSource.camera);
                           recycleDialog();
                         },
@@ -560,6 +564,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                       SignupEitherButton(
                         text: '이미지 업로드',
                         onPressed: () async {
+                          isSearch = true;
                           await getImage(ImageSource.gallery);
                           recycleDialog();
                         },
@@ -600,7 +605,7 @@ class _CameraExampleState extends ConsumerState<ImageSearchScreen> {
                       );
                     },
                     buttonName: '검색 시작',
-                    isButtonEnabled: true,
+                    isButtonEnabled: isSearch,
                     color: SUB_BLUE_COLOR,
                   ),
                 ],
