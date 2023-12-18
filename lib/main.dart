@@ -50,7 +50,7 @@ class MyApp extends ConsumerWidget {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     return ScreenUtilInit(
-      designSize: Size(375, 812),
+      designSize: Size(375, 813),
       builder: (context, child) => MaterialApp.router(
         theme: ThemeData(
           fontFamily: 'Pretendard',
