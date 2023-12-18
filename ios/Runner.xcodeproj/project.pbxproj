@@ -728,6 +728,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "-fcxx-modules";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.yakmoya;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = "";
