@@ -75,27 +75,36 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
       finalSelectedFormType = formExcTextController.text.trim();
     }
 
-    if (selectedFormType == '전체') {
-      finalSelectedFormType = "";
+    if (selectedFormType == '알수없음') {
+      selectedFormType = "";
+    }
+
+    if (selectedShapeType == '알수없음') {
+      selectedShapeType = "";
     }
 
     final PillSearchModel searchModel = PillSearchModel(
-      labelForms: finalSelectedFormType,
+      labelForms: selectedFormType,
       labelShapes: selectedShapeType,
       labelColor1: selectedColorType1,
       labelColor2: selectedColorType2, // 필요에 따라 수정
       labelLineBack: "",
       labelLineFront: "",
-      labelPrintBack: ocrTextController.text.trim(),
+      labelPrintBack: "",
       labelPrintFront: ocrTextController.text.trim(),
     );
 
     print(searchModel.labelPrintFront);
     print(searchModel.labelPrintBack);
     ref.read(pillSearchProvider.notifier).searchImage(searchModel);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SearchResultsScreen(),
+      ),
+    );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -103,10 +112,9 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
     final searchStatus = pillSearchState.status;
     final searchResponse = pillSearchState.results; // 검색 결과 가져오기
 
-
     // 여기에 위젯 구성
     return DefaultLayout(
-      backgroundColor: PRIMARY_BLUE_COLOR,
+      backgroundColor: Colors.white,
       title: '알약 필터링',
       child: SingleChildScrollView(
         child: Padding(
@@ -146,10 +154,12 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 50),
                 child: CustomTextFormField(
                   controller: formExcTextController,
-                  onChanged: (value) {
-
-                  },
+                  onChanged: (value) {},
                 ),
+              ),
+              Divider(
+                color: Colors.grey[400],
+                thickness: 0.5,
               ),
               FilteringAskLabel(text: '올바른 모양을 선택해 주세요!'),
               CustomDropdownButton(
@@ -165,6 +175,10 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
                   checkButtonEnabled();
                 },
               ),
+              Divider(
+                color: Colors.grey[400],
+                thickness: 0.5,
+              ),
               FilteringAskLabel(text: '올바른 색상들을 선택해 주세요!'),
               CustomDropdownButton(
                 dropdownWidth: 120,
@@ -179,7 +193,6 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
                   checkButtonEnabled();
                 },
               ),
-
               FilteringAskLabel(text: '(경질 캡슐일 경우 색상이 2개입니다)'),
               CustomDropdownButton(
                 dropdownWidth: 120,
@@ -194,17 +207,25 @@ class _FilteringScreenState extends ConsumerState<FilteringScreen> {
                   checkButtonEnabled();
                 },
               ),
+              Divider(
+                color: Colors.grey[400],
+                thickness: 0.5,
+              ),
               FilteringAskLabel(text: '식별된 문자를 정확히 입력해 주세요!'),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50),
                 child: CustomTextFormField(
                   controller: ocrTextController,
-                  onChanged: (value) {
-
-                  },
+                  onChanged: (value) {},
                 ),
               ),
-              SizedBox(height: 150,),
+              Divider(
+                color: Colors.grey[400],
+                thickness: 0.5,
+              ),
+              SizedBox(
+                height: 100,
+              ),
               LoginNextButton(
                 onPressed: searchPill, // searchPill 메서드 호출
                 buttonName: '검색 시작',
