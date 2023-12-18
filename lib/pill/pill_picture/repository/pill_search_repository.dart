@@ -43,7 +43,7 @@ abstract class PillSearchRepository {
     @Path() required String id,
   });
 
-  @DELETE('{id}/likes')
+  @DELETE('likes/{id}')
   @Headers({'accessToken': 'true'})
   Future<void> deletePill({
     @Path() required String id,

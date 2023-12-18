@@ -133,7 +133,7 @@ class _PillSearchRepository implements PillSearchRepository {
     )
         .compose(
           _dio.options,
-          '${id}/likes',
+          'likes/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
