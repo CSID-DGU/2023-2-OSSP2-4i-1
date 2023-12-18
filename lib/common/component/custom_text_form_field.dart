@@ -15,8 +15,12 @@ class CustomTextFormField extends StatefulWidget {
   final bool? expands; // 추가
   final TextAlign textAlign;  // 추가
   final TextAlignVertical textAlignVertical;  // 추가
+  final bool? showClearIcon;
+  final bool? onlyNumber;
 
   const CustomTextFormField({
+    this.onlyNumber = false,
+    this.showClearIcon = false,
     this.textAlign = TextAlign.start,  // 기본값을 왼쪽으로 설정
     this.textAlignVertical = TextAlignVertical.top,  // 기본값을 상단으로 설정
     this.enable,
@@ -53,6 +57,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 4, 14, 6),
       child: TextFormField(
+        keyboardType: widget.onlyNumber! ? TextInputType.number : null, // 숫자 키보드만 표시
         textAlign: widget.textAlign,
         textAlignVertical: widget.textAlignVertical,
         enabled: widget.enable ?? true,
@@ -71,15 +76,20 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         autofocus: widget.autofocus,
         onChanged: widget.onChanged,
         decoration: InputDecoration(
-          fillColor: Colors.white, // 내부 색상을 흰색으로 설정
-          filled: true, // 내부 색상을 적용하려면 true로 설정
+          suffixIcon: widget.showClearIcon! ? IconButton( // 추가한 부분
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              // 아이콘 버튼 클릭 시 텍스트 필드 내용 지우기
+              widget.controller?.clear();
+            },
+          ) : null,
           contentPadding: EdgeInsets.fromLTRB(14, 12, 14, 12),
           hintText: widget.hintText,
           errorText: widget.errorText,
           hintStyle: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 17.0,
-            color: Colors.grey[700],
+            fontWeight: FontWeight.w300,
+            fontSize: 14.0,
+            color: Colors.grey[600],
           ),
           border: baseBorder,
           focusedBorder: baseBorder.copyWith(
