@@ -24,15 +24,6 @@ class SearchDetailScreen extends ConsumerStatefulWidget {
 
 class _SearchDetailScreenState extends ConsumerState<SearchDetailScreen> {
   bool isFavorite = false; // 좋아요 상태를 로컬에서 관리
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   // ref.read(pillSearchProvider.notifier).getDetail(id: widget.id);
-  //   ref.read(pillSearchProvider.notifier).getPillDetail(widget.id);
-  //   print('now');
-  //   super.initState();
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -43,7 +34,8 @@ class _SearchDetailScreenState extends ConsumerState<SearchDetailScreen> {
         final pillsState = ref.read(pillsProvider);
         if (pillsState is AsyncData<List<UserPillModel>>) {
           setState(() {
-            isFavorite = pillsState.value.any((pill) => pill.id == pillDetail.id);
+            isFavorite =
+                pillsState.value.any((pill) => pill.id == pillDetail.id);
           });
         }
       }
@@ -103,56 +95,29 @@ class _SearchDetailScreenState extends ConsumerState<SearchDetailScreen> {
     isFavorite = isPillFavorite(pillDetail, pills);
     print(isFavorite);
     void togglePillFavorite() {
-      final pillDetail = ref.read(pillSearchProvider).pillDetailModel!;
-      final isCurrentlyFavorite = isFavorite;
-
+      // 상태를 먼저 업데이트하고 네트워크 요청을 보냅니다.
       setState(() {
         isFavorite = !isFavorite;
       });
 
-      if (isCurrentlyFavorite) {
-        ref.read(pillSearchProvider.notifier).deletePill(pillDetail.id.toString());
+      final pillDetail = ref.read(pillSearchProvider).pillDetailModel!;
+
+      if (isFavorite) {
+        // 좋아요 추가 네트워크 요청
+        ref
+            .read(pillSearchProvider.notifier)
+            .likesPill(pillDetail.id.toString());
       } else {
-        ref.read(pillSearchProvider.notifier).likesPill(pillDetail.id.toString());
+        // 좋아요 삭제 네트워크 요청
+        ref
+            .read(pillSearchProvider.notifier)
+            .deletePill(pillDetail.id.toString());
       }
-      ref.read(pillsProvider).isRefreshing;
-      print(isFavorite);
     }
-    // void togglePillFavorite() {
-    //   final pillDetail = ref.read(pillSearchProvider).pillDetailModel!;
-    //   isFavorite = isPillFavorite(pillDetail, pills);
-    //   print(isFavorite);
-    //   if (isFavorite) {
-    //     print('좋아요 삭제!');
-    //     // 좋아요 삭제
-    //     ref
-    //         .read(pillSearchProvider.notifier)
-    //         .deletePill(pillDetail.id.toString());
-    //   } else {
-    //     print('좋아요 추가!');
-    //     // 좋아요 추가
-    //     ref
-    //         .read(pillSearchProvider.notifier)
-    //         .likesPill(pillDetail.id.toString());
-    //   }
-    //
-    //
-    //
-    //   // 상태 업데이트 (옵셔널)
-    //   setState(() {
-    //     print('좋아요 반영!');
-    //     //
-    //     // isFavorite = !isFavorite;
-    //     print(isFavorite);
-    //     ref.read(pillsProvider);
-    //     ref.read(userMeProvider);
-    //   });
-    // }
 
     // pillEffect 값을 검사하여 <삭제>일 경우 대체 텍스트를 설정합니다.
-    final pillEffectText = pillDetail.pillEffect == "<삭제>"
-        ? "해당란은 공백입니다."
-        : pillDetail.pillEffect;
+    final pillEffectText =
+        pillDetail.pillEffect == "<삭제>" ? "해당란은 공백입니다." : pillDetail.pillEffect;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -165,16 +130,27 @@ class _SearchDetailScreenState extends ConsumerState<SearchDetailScreen> {
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              onTap: togglePillFavorite, // 여기에 메서드 연결
-              child: SvgPicture.asset(
-                isFavorite ? 'assets/img/star2.svg' : 'assets/img/star1.svg',
-                width: 40,
-              ),
-            ),
-          ),
+          isFavorite
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: GestureDetector(
+                    onTap: togglePillFavorite, // 여기에 메서드 연결
+                    child: SvgPicture.asset(
+                      'assets/img/star2.svg',
+                      width: 40,
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: GestureDetector(
+                    onTap: togglePillFavorite, // 여기에 메서드 연결
+                    child: SvgPicture.asset(
+                      'assets/img/star1.svg',
+                      width: 40,
+                    ),
+                  ),
+                ),
         ],
       ),
       body: SingleChildScrollView(
