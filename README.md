@@ -1,7 +1,4 @@
-![image](https://github.com/CSID-DGU/2023-2-OSSP2-4i-1/assets/106448279/eed6d869-fcce-4aa0-ae72-b84adc9c033a)<div> 
-   
-![header](https://capsule-render.vercel.app/api?type=Waving&text=Yakmoya&color=4D47DA)
-
+![header](https://capsule-render.vercel.app/api?type=Waving&text=Yakmoya&color=0D9DE8)
 <div>
 
 
@@ -60,13 +57,13 @@
 > 알약봉지가 사라지거나, 다약제 복용으로 알약들이 섞여버릴때, 내가 찾는 그 약이 맞는지 빠르게 찾고싶을 때가 있다. 하지만 알약의 정보를 곧바로 정확하게 찾아내기에는 어려운 경우도 많다. 약모야는 이미지기반 검색 시스템으로 알약의 정보를 편하게 찾을 수 있도록 하고, 상호작용 검색을 통해 알약의 오용으로 인한 부작용을 예방한다. 또한 복약 알리미 기능을 제공하여 아침/점심/저녁 시간대의 알림 기능을 제공하는 간단한 어플리케이션이다.
 
 
-## 3. 시연 영상 및 스크린샷
+# 3. 시연 영상 및 스크린샷
 
-### 💻 시연 영상
-@@@@
-### ScreenShot
+## 💻 시연 영상
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ej2ZTErFJ7Y/0.jpg)](https://www.youtube.com/watch?v=ej2ZTErFJ7Y)
 
 
+## ✨ 스크린샷
 1️⃣ 시작화면, 로그인, 회원가입 
 ---
 <img width="880" alt="스크린샷 2023-12-19 오후 11 40 41" src="https://github.com/CSID-DGU/2023-2-OSSP2-4i-1/assets/106448279/c21ef02e-a5c8-4c08-ac28-ced1842af157">
@@ -96,7 +93,7 @@
 <img width="880" alt="스크린샷 2023-12-19 오후 11 49 41" src="https://github.com/CSID-DGU/2023-2-OSSP2-4i-1/assets/106448279/0e68c4dd-8b87-48d9-bdf7-a045b113b7aa">
 
 
-## 4. Architecture
+# ❇️ 4. Architecture
 
 ## AI-Client
 
@@ -111,3 +108,4 @@
 ![스크린샷 2023-12-19 오후 11 33 47](https://github.com/CSID-DGU/2023-2-OSSP2-4i-1/assets/106448279/8b49c42e-9f58-44b5-8ece-ceda486167bf)
 
 
+## Lisense
