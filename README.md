@@ -9,7 +9,7 @@
 
 | 이름                                         | 전공           | 학번   | Email                |역할
 | -------------------------------------------- | -------------- | ------ | -------------------- |--------
-| [이도형](https://github.com/puretension)       | 컴퓨터공학전공 | 20학번 | rlrlfhtm5@gmail.com |**Front-End**
+| [이도형](https://github.com/puretension)       | 컴퓨터공학전공 | 20학번 | rlrlfhtm5@gmail.com |**Front-End,Design**
 | [박영하](https://github.com/bakyoungha)      | 법학전공       | 20학번 | youngha0930@dgu.ac.kr  |**Back-End**
 | [신예빈](https://github.com/ShinYEB)      | 컴퓨터공학전공       | 17학번 | dpqls9799@naver.com  |**AI**
 | [정환욱](https://github.com/HwanewKing)      | 수학전공       | 18학번 | udown0109@naver.com  |**PM**
