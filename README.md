@@ -74,16 +74,23 @@ flutter run // 플러터 실행
 
 ## 2️⃣ 실행이 안될때
 
-1. flutter ERROR
+### 1. flutter ERROR
 ```dart
 flutter clean // 플러터 의존성 제거
 flutter pub get  // 의존성 패키지 재설치
 을 통해서 플러터 의존성을 다시 받아주자.
 ```
 
-2. iOS ERROR
+### 2. iOS ERROR
 ```dart
 cd ios // ios 폴더 이동
 rm -rf Podfile.lock // Podfile.lock 제거
 pod install --repo-update // 의존성 패키지 재설치
 ```
+
+### 3.Use of '@import' when C++ modules are disabled, consider using -fmodules and -fcxx-modules ERROR
+![스크린샷 2023-12-20 오전 12 42 44](https://github.com/CSID-DGU/2023-2-OSSP2-4i-1/assets/106448279/9ff1d523-c523-49ee-8289-ab9eca0286ab)
+![스크린샷 2023-12-20 오전 12 42 59](https://github.com/CSID-DGU/2023-2-OSSP2-4i-1/assets/106448279/e903ff50-4f95-4244-80fc-717825f1f807)
+![스크린샷 2023-12-20 오전 12 43 20](https://github.com/CSID-DGU/2023-2-OSSP2-4i-1/assets/106448279/fddb2e1b-897b-441a-a52f-5687492477c2)
+![스크린샷 2023-12-20 오전 12 43 33](https://github.com/CSID-DGU/2023-2-OSSP2-4i-1/assets/106448279/3d29fde2-5345-4f52-969c-594556950206)
+
