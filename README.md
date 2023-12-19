@@ -93,7 +93,7 @@
 <img width="880" alt="스크린샷 2023-12-19 오후 11 49 41" src="https://github.com/CSID-DGU/2023-2-OSSP2-4i-1/assets/106448279/0e68c4dd-8b87-48d9-bdf7-a045b113b7aa">
 
 
-# ❇️ 4. Architecture
+# 4. Architecture
 
 ## AI-Client
 
